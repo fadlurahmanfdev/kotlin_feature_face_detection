@@ -45,5 +45,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
     implementation(project(":kotlin_feature_face_detection"))
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_camera:v0.0.2")
 }
