@@ -3,8 +3,6 @@ package co.id.fadlurahmanfdev.kotlinfeaturefacedetection.presentation
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
@@ -12,13 +10,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import co.id.fadlurahmanfdev.kotlin_feature_camera.data.type.FeatureCameraFacing
 import co.id.fadlurahmanfdev.kotlin_feature_camera.domain.common.BaseCameraActivity
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.data.exception.FeatureFaceDetectionException
 import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.domain.plugin.FaceDetectionManager
 import co.id.fadlurahmanfdev.kotlinfeaturefacedetection.R
-import com.google.mlkit.vision.face.Face
 
 class SingleProcessFaceDetectionActivity : BaseCameraActivity(),
-    BaseCameraActivity.AnalyzeListener, FaceDetectionManager.Listener {
+    BaseCameraActivity.AnalyzeListener,
+    FaceDetectionManager.LivenessListener {
     lateinit var cameraPreview: PreviewView
     lateinit var ivFlash: ImageView
     lateinit var ivCamera: ImageView
@@ -27,7 +24,7 @@ class SingleProcessFaceDetectionActivity : BaseCameraActivity(),
 
     override fun onCreateBaseCamera(savedInstanceState: Bundle?) {
         faceDetectionManager = FaceDetectionManager()
-        faceDetectionManager.initialize(this)
+        faceDetectionManager.initialize()
     }
 
     override fun onSetCameraFacing() {
@@ -37,7 +34,7 @@ class SingleProcessFaceDetectionActivity : BaseCameraActivity(),
     @ExperimentalGetImage
     override fun onSetCameraPurpose() {
         setCameraPurposeAnalysis { imageProxy ->
-            faceDetectionManager.processImage(imageProxy)
+            faceDetectionManager.processLivenessImage(imageProxy, this)
         }
     }
 
@@ -67,16 +64,28 @@ class SingleProcessFaceDetectionActivity : BaseCameraActivity(),
         ivCamera.visibility = View.INVISIBLE
     }
 
-    override fun onFaceDetected(face: Face) {
-        println("MASUK FACE DETECTED")
+    override fun onShouldCloseLeftEye(eyeIsClosed: Boolean) {
+        println("ON SHOULD CLOSE LEFT EYE, EYE IS CLOSED: $eyeIsClosed")
     }
 
-    override fun onEmptyFaceDetected() {
-        println("MASUK EMPTY FACE DETECTED")
+    override fun onClosedLeftEyeSucceed() {
+        println("LEFT EYE CLOSE SUCCEED")
     }
 
-    override fun onFailureDetectedFace(exception: FeatureFaceDetectionException) {
-        println("MASUK EXCEPTION FAILURE DETECT FACE: ${exception.message}")
+    override fun onShouldCloseRightEye(eyeIsClosed: Boolean) {
+        println("ON SHOULD CLOSE RIGHT EYE, RIGHT EYE CLOSED: $eyeIsClosed")
+    }
+
+    override fun onClosedRightEyeSucceed() {
+        println("RIGHT EYE CLOSE SUCCEED")
+    }
+
+    override fun onShouldBothEyesOpen(isRightEyeOpen: Boolean, isLeftEyeOpen: Boolean) {
+        println("ASK BOTH EYE KEEP OPEN: RIGHT OPEN: $isRightEyeOpen, LEFT EYE OPEN: $isLeftEyeOpen")
+    }
+
+    override fun onBothEyesOpenSucceed() {
+        println("MASUK SUKSES BOTH EYES OPEN")
     }
 
 }
