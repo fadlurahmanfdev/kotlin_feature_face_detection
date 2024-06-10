@@ -16,9 +16,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
 rootProject.name = "Kotlin Feature FaceDetection"
 include(":app")
-include(":kotlin_feature_face_recognition")
+include(":kotlin_feature_face_detection")

@@ -1,5 +1,6 @@
 package co.id.fadlurahmanfdev.kotlinfeaturefacedetection.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +18,9 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
     private val features: List<FeatureModel> = listOf<FeatureModel>(
         FeatureModel(
             featureIcon = R.drawable.baseline_developer_mode_24,
-            title = "Request Location Permission",
-            desc = "Request Location Permission",
-            enum = "REQUEST_LOCATION_PERMISSION"
+            title = "Single Process Face Detection",
+            desc = "Single Process Face Detection",
+            enum = "SINGLE_FACE_DETECTION_PROCESS"
         )
     )
 
@@ -50,7 +51,9 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
     }
     override fun onClicked(item: FeatureModel) {
         when (item.enum) {
-            "REQUEST_LOCATION_PERMISSION" -> {
+            "SINGLE_FACE_DETECTION_PROCESS" -> {
+                val intent = Intent(this, SingleProcessFaceDetectionActivity::class.java)
+                startActivity(intent)
             }
         }
     }
