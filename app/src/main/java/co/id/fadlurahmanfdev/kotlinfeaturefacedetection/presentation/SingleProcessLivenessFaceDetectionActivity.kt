@@ -1,33 +1,30 @@
 package co.id.fadlurahmanfdev.kotlinfeaturefacedetection.presentation
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import androidx.camera.core.ExperimentalGetImage
-import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import co.id.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraFacing
 import co.id.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraPurpose
-import co.id.fadlurahmanfdev.kotlin_feature_camera.data.exception.FeatureCameraException
 import co.id.fadlurahmanfdev.kotlin_feature_camera.domain.common.BaseCameraActivity
-import co.id.fadlurahmanfdev.kotlin_feature_camera.other.utility.FeatureCameraUtility
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.data.exception.FeatureFaceDetectionException
 import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.domain.plugin.FaceDetectionManager
 import co.id.fadlurahmanfdev.kotlinfeaturefacedetection.R
-import com.google.mlkit.vision.face.Face
 
-class SingleProcessFaceDetectionActivity : BaseCameraActivity(), BaseCameraActivity.CaptureListener,
-    FaceDetectionManager.CaptureListener {
+class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
+    BaseCameraActivity.AnalyzeListener,
+    FaceDetectionManager.LivenessListener {
     lateinit var cameraPreview: PreviewView
     lateinit var ivFlash: ImageView
     lateinit var ivCamera: ImageView
     lateinit var ivSwitch: ImageView
     lateinit var faceDetectionManager: FaceDetectionManager
+
     override var cameraFacing: FeatureCameraFacing = FeatureCameraFacing.FRONT
-    override var cameraPurpose: FeatureCameraPurpose = FeatureCameraPurpose.IMAGE_CAPTURE
+    override var cameraPurpose: FeatureCameraPurpose = FeatureCameraPurpose.IMAGE_ANALYSIS
 
     override fun onAfterBindCameraToView() {}
 
@@ -36,6 +33,7 @@ class SingleProcessFaceDetectionActivity : BaseCameraActivity(), BaseCameraActiv
         faceDetectionManager.initialize()
     }
 
+    @ExperimentalGetImage
     override fun onStartCreateBaseCamera(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_single_process_face_detection)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -47,50 +45,53 @@ class SingleProcessFaceDetectionActivity : BaseCameraActivity(), BaseCameraActiv
         ivFlash = findViewById<ImageView>(R.id.iv_flash)
         ivCamera = findViewById<ImageView>(R.id.iv_camera)
         ivSwitch = findViewById<ImageView>(R.id.iv_switch_camera)
+        addAnalyzeListener(this)
 
         ivCamera.setOnClickListener {
-            takePicture()
+            startAnalyze { imageProxy ->
+                faceDetectionManager.processLivenessImage(imageProxy, this)
+            }
         }
-
-        addCaptureListener(this)
     }
 
     override fun setSurfaceProviderBaseCamera(preview: Preview) {
         preview.setSurfaceProvider(cameraPreview.surfaceProvider)
     }
 
-    override fun onCaptureError(exception: FeatureCameraException) {
+    override fun isTorchChanged(isTorch: Boolean) {
 
     }
 
-    @ExperimentalGetImage
-    override fun onCaptureSuccess(imageProxy: ImageProxy) {
-        println("MASUK_ ON CAPTURE SUCCESS")
-        faceDetectionManager.processImage(imageProxy, this)
+    override fun onStartAnalyze() {
+        ivCamera.visibility = View.INVISIBLE
     }
 
-    override fun onFaceDetected(imageProxy: ImageProxy, face: Face) {
-        println("MASUK_ FACE DETECTED")
-        FeatureCameraUtility.rotationDegree = imageProxy.imageInfo.rotationDegrees.toFloat()
-        FeatureCameraUtility.bitmapImage = FeatureCameraUtility.getBitmapFromImageProxy(imageProxy)
-        println("MASUK SINI ${face.smilingProbability} & ${face.leftEyeOpenProbability} & ${face.rightEyeOpenProbability}")
-        val intent = Intent(this, PreviewFaceImageActivity::class.java)
-        intent.apply {
-            putExtra("SMILING_PROBABILITY", face.smilingProbability)
-            putExtra("LEFT_EYE_OPEN_PROBABILITY", face.leftEyeOpenProbability)
-            putExtra("RIGHT_EYE_OPEN_PROBABILITY", face.rightEyeOpenProbability)
-        }
-        startActivity(intent)
-        imageProxy.close()
+    override fun onStopAnalyze() {
+        TODO("Not yet implemented")
     }
 
-    override fun onEmptyFaceDetected(imageProxy: ImageProxy) {
-        println("MASUK_ EMPTY FACE")
-        imageProxy.close()
+    override fun onShouldCloseLeftEye(eyeIsClosed: Boolean) {
+        println("ON SHOULD CLOSE LEFT EYE, EYE IS CLOSED: $eyeIsClosed")
     }
 
-    override fun onFailureDetectedFace(exception: FeatureFaceDetectionException) {
+    override fun onClosedLeftEyeSucceed() {
+        println("LEFT EYE CLOSE SUCCEED")
+    }
 
+    override fun onShouldCloseRightEye(eyeIsClosed: Boolean) {
+        println("ON SHOULD CLOSE RIGHT EYE, RIGHT EYE CLOSED: $eyeIsClosed")
+    }
+
+    override fun onClosedRightEyeSucceed() {
+        println("RIGHT EYE CLOSE SUCCEED")
+    }
+
+    override fun onShouldBothEyesOpen(isRightEyeOpen: Boolean, isLeftEyeOpen: Boolean) {
+        println("ASK BOTH EYE KEEP OPEN: RIGHT OPEN: $isRightEyeOpen, LEFT EYE OPEN: $isLeftEyeOpen")
+    }
+
+    override fun onBothEyesOpenSucceed() {
+        println("MASUK SUKSES BOTH EYES OPEN")
     }
 
 }

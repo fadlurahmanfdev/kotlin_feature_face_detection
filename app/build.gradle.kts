@@ -47,5 +47,5 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(project(":kotlin_feature_face_detection"))
-    implementation("com.github.fadlurahmanfdev:kotlin_feature_camera:v0.0.2")
+    implementation("com.github.fadlurahmanfdev:kotlin_feature_camera:v0.0.6-beta")
 }

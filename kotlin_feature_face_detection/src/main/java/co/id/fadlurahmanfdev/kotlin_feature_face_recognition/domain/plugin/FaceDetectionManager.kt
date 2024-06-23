@@ -6,6 +6,8 @@ import android.os.Looper
 import android.util.Log
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
+import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.data.enums.ProcessFaceDetectionType
+import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.data.enums.ProcessFaceDetectionType.*
 import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.data.exception.FeatureFaceDetectionException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
@@ -21,9 +23,10 @@ import java.lang.Exception
 class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureListener,
     OnSuccessListener<MutableList<Face>> {
     private lateinit var faceDetector: FaceDetector
-    private var listener: Listener? = null
+    private var captureListener: CaptureListener? = null
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var currentImageProxy: ImageProxy
+    private lateinit var processFaceType: ProcessFaceDetectionType
 
     fun initialize() {
         val option = FaceDetectorOptions.Builder()
@@ -60,20 +63,25 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
     }
 
     @ExperimentalGetImage
-    fun processImage(imageProxy: ImageProxy) {
+    fun processImage(imageProxy: ImageProxy, listener: CaptureListener) {
+        processFaceType = ONE_SHOT
+        if (captureListener == null) {
+            this.captureListener = listener
+        }
         currentImageProxy = imageProxy
-        handler.postDelayed(runnableProcessImage, 1500)
+        handler.postDelayed(runnableProcessImage, 2000)
     }
 
     private var livenessListener: LivenessListener? = null
 
     @ExperimentalGetImage
     fun processLivenessImage(imageProxy: ImageProxy, listener: LivenessListener) {
+        processFaceType = LIVENESS
         if (livenessListener == null) {
             livenessListener = listener
         }
         currentImageProxy = imageProxy
-        handler.postDelayed(runnableProcessImage, 1500)
+        handler.postDelayed(runnableProcessImage, 2000)
     }
 
     @ExperimentalGetImage
@@ -81,9 +89,16 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
         handler.removeCallbacks(runnableProcessImage)
     }
 
-    interface Listener {
-        fun onFaceDetected(face: Face)
-        fun onEmptyFaceDetected()
+    interface CaptureListener {
+        /**
+         * make sure to close imageProxy
+         * */
+        fun onFaceDetected(imageProxy: ImageProxy, face: Face)
+
+        /**
+         * make sure to close imageProxy
+         * */
+        fun onEmptyFaceDetected(imageProxy: ImageProxy)
         fun onFailureDetectedFace(exception: FeatureFaceDetectionException)
     }
 
@@ -102,70 +117,27 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
         if (faces.isNotEmpty()) {
             if (faces.size == 1) {
                 val face = faces.first()
-                when {
-                    livenessListener != null -> {
-                        when {
-                            !isLeftEyeAlreadyClose -> {
-                                // ini mirroring, rightEyeOpenProbability artinya peluang mata kiri user terbuka
-                                val isLeftEyeClose =
-                                    (face.rightEyeOpenProbability ?: 1.0f) < 0.1
-                                livenessListener?.onShouldCloseLeftEye(isLeftEyeClose)
-                                if (isLeftEyeClose) {
-                                    successCountImage++
-                                    processCountImage = 0
-                                    if (successCountImage >= 2) {
-                                        successCountImage = 0
-                                        isLeftEyeAlreadyClose = true
-                                        livenessListener?.onClosedLeftEyeSucceed()
-                                    }
-                                } else {
-                                    processCountImage++
-                                }
-                            }
-
-                            !isRightEyeAlreadyClose -> {
-                                // ini mirroring, leftEyeOpenProbability artinya peluang mata kanan user terbuka
-                                val isRightEyeClose =
-                                    (face.leftEyeOpenProbability ?: 1.0f) < 0.1
-                                livenessListener?.onShouldCloseRightEye(isRightEyeClose)
-                                if (isRightEyeClose) {
-                                    successCountImage++
-                                    processCountImage = 0
-                                    if (successCountImage >= 2) {
-                                        successCountImage = 0
-                                        isRightEyeAlreadyClose = true
-                                        livenessListener?.onClosedRightEyeSucceed()
-                                    }
-                                } else {
-                                    processCountImage++
-                                }
-                            }
-
-                            !isBothEyesAlreadyOpen -> {
-                                val isRightEyeOpen = (face.leftEyeOpenProbability ?: 1.0f) > 0.9
-                                val isLeftEyeOpen = (face.rightEyeOpenProbability ?: 1.0f) > 0.9
-                                livenessListener?.onShouldBothEyesOpen(
-                                    isRightEyeOpen = isRightEyeOpen,
-                                    isLeftEyeOpen = isLeftEyeOpen
-                                )
-                                if (isRightEyeOpen && isLeftEyeOpen) {
-                                    successCountImage++
-                                    processCountImage = 0
-                                }
-                                if (successCountImage >= 2) {
-                                    successCountImage = 0
-                                    isBothEyesAlreadyOpen = true
-                                    livenessListener?.onBothEyesOpenSucceed()
-
-                                } else {
-                                    processCountImage++
-                                }
-                            }
+                when (processFaceType) {
+                    ONE_SHOT -> {
+                        if (captureListener != null) {
+                            processOneShotImage(currentImageProxy, face)
+                        } else {
+                            Log.e(
+                                FaceDetectionManager::class.java.simpleName,
+                                "Failed process oneshot image, listener null"
+                            )
                         }
                     }
 
-                    listener != null -> {
-                        listener?.onFaceDetected(face)
+                    LIVENESS -> {
+                        if (livenessListener != null) {
+                            processLivenessImage(face)
+                        } else {
+                            Log.e(
+                                FaceDetectionManager::class.java.simpleName,
+                                "Failed process liveness image, liveness listener null"
+                            )
+                        }
                     }
                 }
             } else {
@@ -173,10 +145,75 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
                     code = "ERR_MULTIPLE_FACES",
                     message = "Multiple faces detected in the image."
                 )
-                listener?.onFailureDetectedFace(exception)
+                captureListener?.onFailureDetectedFace(exception)
             }
         } else {
-            listener?.onEmptyFaceDetected()
+            captureListener?.onEmptyFaceDetected(currentImageProxy)
+        }
+    }
+
+    private fun processOneShotImage(imageProxy: ImageProxy, face: Face) {
+        captureListener!!.onFaceDetected(imageProxy, face)
+    }
+
+    private fun processLivenessImage(face: Face) {
+        when {
+            !isLeftEyeAlreadyClose -> {
+                // ini mirroring, rightEyeOpenProbability artinya peluang mata kiri user terbuka
+                val isLeftEyeClose =
+                    (face.rightEyeOpenProbability ?: 1.0f) < 0.1
+                livenessListener?.onShouldCloseLeftEye(isLeftEyeClose)
+                if (isLeftEyeClose) {
+                    successCountImage++
+                    processCountImage = 0
+                    if (successCountImage >= 2) {
+                        successCountImage = 0
+                        isLeftEyeAlreadyClose = true
+                        livenessListener?.onClosedLeftEyeSucceed()
+                    }
+                } else {
+                    processCountImage++
+                }
+            }
+
+            !isRightEyeAlreadyClose -> {
+                // ini mirroring, leftEyeOpenProbability artinya peluang mata kanan user terbuka
+                val isRightEyeClose =
+                    (face.leftEyeOpenProbability ?: 1.0f) < 0.1
+                livenessListener?.onShouldCloseRightEye(isRightEyeClose)
+                if (isRightEyeClose) {
+                    successCountImage++
+                    processCountImage = 0
+                    if (successCountImage >= 2) {
+                        successCountImage = 0
+                        isRightEyeAlreadyClose = true
+                        livenessListener?.onClosedRightEyeSucceed()
+                    }
+                } else {
+                    processCountImage++
+                }
+            }
+
+            !isBothEyesAlreadyOpen -> {
+                val isRightEyeOpen = (face.leftEyeOpenProbability ?: 1.0f) > 0.9
+                val isLeftEyeOpen = (face.rightEyeOpenProbability ?: 1.0f) > 0.9
+                livenessListener?.onShouldBothEyesOpen(
+                    isRightEyeOpen = isRightEyeOpen,
+                    isLeftEyeOpen = isLeftEyeOpen
+                )
+                if (isRightEyeOpen && isLeftEyeOpen) {
+                    successCountImage++
+                    processCountImage = 0
+                }
+                if (successCountImage >= 2) {
+                    successCountImage = 0
+                    isBothEyesAlreadyOpen = true
+                    livenessListener?.onBothEyesOpenSucceed()
+
+                } else {
+                    processCountImage++
+                }
+            }
         }
     }
 
@@ -185,10 +222,16 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
             code = "ERR_GENERAL",
             message = p0.message
         )
-        listener?.onFailureDetectedFace(exception)
+        captureListener?.onFailureDetectedFace(exception)
     }
 
     override fun onComplete(p0: Task<MutableList<Face>>) {
-        currentImageProxy.close()
+        when (processFaceType) {
+            LIVENESS -> {
+                currentImageProxy.close()
+            }
+
+            else -> {}
+        }
     }
 }
