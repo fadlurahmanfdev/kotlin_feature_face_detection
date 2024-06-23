@@ -9,6 +9,11 @@
 
     <androidx.camera.view.PreviewView
         android:id="@+id/cameraPreview"
+        app:scaleType="fitCenter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <co.id.fadlurahmanfdev.kotlin_feature_camera.presentation.SelfieOverlayView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -22,25 +27,25 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
+            android:id="@+id/iv_flash"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_weight="1"
-            android:id="@+id/iv_flash"
             android:src="@drawable/round_flash_off_24"
             app:tint="@color/white" />
 
         <ImageView
+            android:id="@+id/iv_camera"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:id="@+id/iv_camera"
             android:layout_marginHorizontal="20dp"
             android:padding="15dp"
             android:src="@drawable/round_camera_alt_24"
             app:tint="@color/white" />
 
         <ImageView
-            android:layout_width="25dp"
             android:id="@+id/iv_switch_camera"
+            android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_weight="1"
             android:src="@drawable/round_autorenew_24"
