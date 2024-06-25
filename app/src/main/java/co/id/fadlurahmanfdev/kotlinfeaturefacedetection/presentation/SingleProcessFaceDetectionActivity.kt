@@ -65,17 +65,16 @@ class SingleProcessFaceDetectionActivity : BaseCameraActivity(), BaseCameraActiv
 
     @ExperimentalGetImage
     override fun onCaptureSuccess(imageProxy: ImageProxy) {
-        println("MASUK_ ON CAPTURE SUCCESS")
         faceDetectionManager.processImage(imageProxy, this)
     }
 
     override fun onFaceDetected(imageProxy: ImageProxy, face: Face) {
-        println("MASUK_ FACE DETECTED")
         FeatureCameraUtility.rotationDegree = imageProxy.imageInfo.rotationDegrees.toFloat()
         FeatureCameraUtility.bitmapImage = FeatureCameraUtility.getBitmapFromImageProxy(imageProxy)
         println("MASUK SINI ${face.smilingProbability} & ${face.leftEyeOpenProbability} & ${face.rightEyeOpenProbability}")
         val intent = Intent(this, PreviewFaceImageActivity::class.java)
         intent.apply {
+            putExtra("FLOW", "CAPTURE")
             putExtra("SMILING_PROBABILITY", face.smilingProbability)
             putExtra("LEFT_EYE_OPEN_PROBABILITY", face.leftEyeOpenProbability)
             putExtra("RIGHT_EYE_OPEN_PROBABILITY", face.rightEyeOpenProbability)

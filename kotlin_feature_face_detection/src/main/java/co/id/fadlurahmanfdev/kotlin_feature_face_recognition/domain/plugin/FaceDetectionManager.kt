@@ -81,7 +81,7 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
             livenessListener = listener
         }
         currentImageProxy = imageProxy
-        handler.postDelayed(runnableProcessImage, 2000)
+        handler.postDelayed(runnableProcessImage, 1000)
     }
 
     @ExperimentalGetImage
@@ -109,9 +109,10 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
 
         fun onClosedRightEyeSucceed()
         fun onShouldBothEyesOpen(isRightEyeOpen: Boolean, isLeftEyeOpen: Boolean)
-        fun onBothEyesOpenSucceed()
+        fun onBothEyesOpenSucceed(imageProxy: ImageProxy)
     }
 
+    @ExperimentalGetImage
     override fun onSuccess(p0: MutableList<Face>?) {
         val faces = p0 ?: listOf()
         if (faces.isNotEmpty()) {
@@ -131,7 +132,7 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
 
                     LIVENESS -> {
                         if (livenessListener != null) {
-                            processLivenessImage(face)
+                            processLivenessImage(currentImageProxy, face)
                         } else {
                             Log.e(
                                 FaceDetectionManager::class.java.simpleName,
@@ -156,7 +157,8 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
         captureListener!!.onFaceDetected(imageProxy, face)
     }
 
-    private fun processLivenessImage(face: Face) {
+    @ExperimentalGetImage
+    private fun processLivenessImage(imageProxy: ImageProxy, face: Face) {
         when {
             !isLeftEyeAlreadyClose -> {
                 // ini mirroring, rightEyeOpenProbability artinya peluang mata kiri user terbuka
@@ -208,8 +210,8 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
                 if (successCountImage >= 2) {
                     successCountImage = 0
                     isBothEyesAlreadyOpen = true
-                    livenessListener?.onBothEyesOpenSucceed()
-
+                    livenessListener?.onBothEyesOpenSucceed(imageProxy)
+                    handler.removeCallbacks(runnableProcessImage)
                 } else {
                     processCountImage++
                 }

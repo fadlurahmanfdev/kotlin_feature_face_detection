@@ -21,6 +21,12 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
             title = "Single Process Face Detection",
             desc = "Single Process Face Detection",
             enum = "SINGLE_FACE_DETECTION_PROCESS"
+        ),
+        FeatureModel(
+            featureIcon = R.drawable.baseline_developer_mode_24,
+            title = "Liveness Process Face Detection",
+            desc = "Liveness Process Face Detection",
+            enum = "LIVENESS_FACE_DETECTION_PROCESS"
         )
     )
 
@@ -53,6 +59,10 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
         when (item.enum) {
             "SINGLE_FACE_DETECTION_PROCESS" -> {
                 val intent = Intent(this, SingleProcessFaceDetectionActivity::class.java)
+                startActivity(intent)
+            }
+            "LIVENESS_FACE_DETECTION_PROCESS" -> {
+                val intent = Intent(this, SingleProcessLivenessFaceDetectionActivity::class.java)
                 startActivity(intent)
             }
         }

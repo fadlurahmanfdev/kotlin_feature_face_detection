@@ -2,6 +2,7 @@ package co.id.fadlurahmanfdev.kotlinfeaturefacedetection.presentation
 
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -32,10 +33,16 @@ class PreviewFaceImageActivity : AppCompatActivity() {
         val smilingProbability = intent.getFloatExtra("SMILING_PROBABILITY", -1.0f)
         val leftEyeOpenProbability = intent.getFloatExtra("LEFT_EYE_OPEN_PROBABILITY", -1.0f)
         val rightEyeOpenProbability = intent.getFloatExtra("RIGHT_EYE_OPEN_PROBABILITY", -1.0f)
+        val flow = intent.getStringExtra("FLOW")
 
-        tvSummary.text = "SMILING PROBABILITY: $smilingProbability" +
-                "\nLEFT EYE OPEN PROBABILITY: $leftEyeOpenProbability" +
-                "\nRIGHT EYE OPEN PROBABILITY: $rightEyeOpenProbability"
+        if (flow == "CAPTURE") {
+            tvSummary.visibility = View.VISIBLE
+            tvSummary.text = "SMILING PROBABILITY: $smilingProbability" +
+                    "\nLEFT EYE OPEN PROBABILITY: $leftEyeOpenProbability" +
+                    "\nRIGHT EYE OPEN PROBABILITY: $rightEyeOpenProbability"
+        } else {
+            tvSummary.visibility = View.GONE
+        }
 
         val bitmapImage = FeatureCameraUtility.bitmapImage
 //        val newBitmapImage = Bitmap.createBitmap(
