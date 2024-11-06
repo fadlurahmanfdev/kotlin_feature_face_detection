@@ -69,7 +69,7 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
             this.captureListener = listener
         }
         currentImageProxy = imageProxy
-        handler.postDelayed(runnableProcessImage, 2000)
+        handler.postDelayed(runnableProcessImage, 500)
     }
 
     private var livenessListener: LivenessListener? = null
@@ -99,7 +99,7 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
          * make sure to close imageProxy
          * */
         fun onEmptyFaceDetected(imageProxy: ImageProxy)
-        fun onFailureDetectedFace(exception: FeatureFaceDetectionException)
+        fun onFailureDetectedFace(imageProxy: ImageProxy, exception: FeatureFaceDetectionException)
     }
 
     interface LivenessListener {
@@ -146,7 +146,7 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
                     code = "ERR_MULTIPLE_FACES",
                     message = "Multiple faces detected in the image."
                 )
-                captureListener?.onFailureDetectedFace(exception)
+                captureListener?.onFailureDetectedFace(currentImageProxy, exception)
             }
         } else {
             captureListener?.onEmptyFaceDetected(currentImageProxy)
@@ -224,7 +224,7 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
             code = "ERR_GENERAL",
             message = p0.message
         )
-        captureListener?.onFailureDetectedFace(exception)
+        captureListener?.onFailureDetectedFace(currentImageProxy, exception)
     }
 
     override fun onComplete(p0: Task<MutableList<Face>>) {

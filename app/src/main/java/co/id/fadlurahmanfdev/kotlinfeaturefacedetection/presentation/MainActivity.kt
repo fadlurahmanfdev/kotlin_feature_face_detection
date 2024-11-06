@@ -24,6 +24,12 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
         ),
         FeatureModel(
             featureIcon = R.drawable.baseline_developer_mode_24,
+            title = "Stream Process Face Detection",
+            desc = "Stream Process Face Detection",
+            enum = "STREAM_FACE_DETECTION_PROCESS"
+        ),
+        FeatureModel(
+            featureIcon = R.drawable.baseline_developer_mode_24,
             title = "Liveness Process Face Detection",
             desc = "Liveness Process Face Detection",
             enum = "LIVENESS_FACE_DETECTION_PROCESS"
@@ -59,6 +65,10 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
         when (item.enum) {
             "SINGLE_FACE_DETECTION_PROCESS" -> {
                 val intent = Intent(this, SingleProcessFaceDetectionActivity::class.java)
+                startActivity(intent)
+            }
+            "STREAM_FACE_DETECTION_PROCESS" -> {
+                val intent = Intent(this, StreamFaceDetectionActivity::class.java)
                 startActivity(intent)
             }
             "LIVENESS_FACE_DETECTION_PROCESS" -> {

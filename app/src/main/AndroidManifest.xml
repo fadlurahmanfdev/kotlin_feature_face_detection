@@ -20,6 +20,9 @@
             android:name=".presentation.PreviewFaceImageActivity"
             android:exported="false" />
         <activity
+            android:name=".presentation.StreamFaceDetectionActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.SingleProcessLivenessFaceDetectionActivity"
             android:exported="false" />
         <activity
