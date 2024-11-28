@@ -30,29 +30,21 @@ class PreviewFaceImageActivity : AppCompatActivity() {
         imageView = findViewById(R.id.previewImage)
         tvSummary = findViewById(R.id.tv_summary)
 
-        val smilingProbability = intent.getFloatExtra("SMILING_PROBABILITY", -1.0f)
-        val leftEyeOpenProbability = intent.getFloatExtra("LEFT_EYE_OPEN_PROBABILITY", -1.0f)
-        val rightEyeOpenProbability = intent.getFloatExtra("RIGHT_EYE_OPEN_PROBABILITY", -1.0f)
         val flow = intent.getStringExtra("FLOW")
 
         if (flow == "CAPTURE") {
             tvSummary.visibility = View.VISIBLE
+            val smilingProbability = intent.getFloatExtra("SMILING_PROBABILITY", -1.0f)
+            val leftEyeOpenProbability = intent.getFloatExtra("LEFT_EYE_OPEN_PROBABILITY", -1.0f)
+            val rightEyeOpenProbability = intent.getFloatExtra("RIGHT_EYE_OPEN_PROBABILITY", -1.0f)
             tvSummary.text = "SMILING PROBABILITY: $smilingProbability" +
                     "\nLEFT EYE OPEN PROBABILITY: $leftEyeOpenProbability" +
                     "\nRIGHT EYE OPEN PROBABILITY: $rightEyeOpenProbability"
         } else {
-            tvSummary.visibility = View.GONE
+            tvSummary.visibility = View.VISIBLE
         }
 
         val bitmapImage = SharedModel.bitmap
-//        val newBitmapImage = Bitmap.createBitmap(
-//            bitmapImage,
-//            (bitmapImage.width * 0.25).toInt(),
-//            0,
-//            (bitmapImage.width) - ((bitmapImage.width * 0.25).toInt()),
-//            (bitmapImage.height * 1).toInt(),
-//        )
-
         val newBitmapImage = Bitmap.createBitmap(
             bitmapImage,
             0,
@@ -60,8 +52,6 @@ class PreviewFaceImageActivity : AppCompatActivity() {
             bitmapImage.width,
             bitmapImage.height,
         )
-        println("masuk rotation preview: ${SharedModel.rotation}")
         imageView.setImageBitmap(newBitmapImage)
-//        imageView.rotation = SharedModel.rotation
     }
 }

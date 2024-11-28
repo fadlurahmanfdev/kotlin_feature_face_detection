@@ -248,12 +248,7 @@ class FeatureFaceDetection : OnCompleteListener<MutableList<Face>>, OnFailureLis
     }
 
     override fun onComplete(p0: Task<MutableList<Face>>) {
-        when (processFaceType) {
-            LIVENESS -> {
-                currentImageProxy.close()
-            }
-
-            else -> {}
-        }
+        Log.d(this::class.java.simpleName, "complete face detection: $processFaceType")
+        currentImageProxy.close()
     }
 }

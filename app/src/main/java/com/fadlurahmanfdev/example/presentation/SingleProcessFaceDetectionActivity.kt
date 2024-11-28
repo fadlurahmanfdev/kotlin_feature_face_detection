@@ -85,8 +85,9 @@ class SingleProcessFaceDetectionActivity : BaseCameraActivity(),
         if (cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA) {
             bitmapImage = cameraRepository.mirrorHorizontalBitmap(bitmapImage)
         }
+        println("MASUK BITMAP IMAGE WIDTH: ${bitmapImage.width}")
+        println("MASUK BITMAP IMAGE HEIGHT: ${bitmapImage.height}")
         SharedModel.bitmap = bitmapImage
-        imageProxy.close()
         if (faces.isEmpty()) {
             Log.d(this::class.java.simpleName, "no face detected")
             return
@@ -108,7 +109,6 @@ class SingleProcessFaceDetectionActivity : BaseCameraActivity(),
         exception: FeatureFaceDetectionException
     ) {
         Log.d(this::class.java.simpleName, "empty failure face detection: ${exception.code}")
-        imageProxy.close()
         finish()
     }
 

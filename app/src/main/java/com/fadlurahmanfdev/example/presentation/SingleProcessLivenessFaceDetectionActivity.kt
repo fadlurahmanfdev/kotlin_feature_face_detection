@@ -120,7 +120,13 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
         ivCamera.visibility = View.VISIBLE
         ivStopCamera.visibility = View.GONE
         stopAnalyze()
-        SharedModel.bitmap = cameraRepository.getBitmapFromImageProxy(imageProxy)
+        var bitmapImage = cameraRepository.getBitmapFromImageProxy(imageProxy)
+        if (cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA) {
+            bitmapImage = cameraRepository.mirrorHorizontalBitmap(bitmapImage)
+        }
+        println("MASUK BITMAP IMAGE WIDTH: ${bitmapImage.width}")
+        println("MASUK BITMAP IMAGE HEIGHT: ${bitmapImage.height}")
+        SharedModel.bitmap = bitmapImage
         val intent = Intent(this, PreviewFaceImageActivity::class.java)
         intent.apply {
             putExtra("FLOW", "LIVENESS")
