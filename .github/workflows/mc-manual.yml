@@ -29,11 +29,11 @@ jobs:
           echo "---------------------------||---------------------------"
           echo "---------------------------||---------------------------"
           echo "" >> gradle.properties
-          echo "mavenCentralUsername=${{ secrets.MAVEN_CENTRAL_TOKEN_USERNAME }}" >> gradle.properties
+          echo "mavenCentralUsername=${{ vars.MAVEN_CENTRAL_TOKEN_USERNAME }}" >> gradle.properties
           echo "" >> gradle.properties
           echo "mavenCentralPassword=${{ secrets.MAVEN_CENTRAL_TOKEN_PASSWORD }}" >> gradle.properties
           echo "" >> gradle.properties
-          echo "signing.keyId=${{ secrets.GPG_KEY_ID }}" >> gradle.properties
+          echo "signing.keyId=${{ vars.GPG_KEY_ID }}" >> gradle.properties
           echo "" >> gradle.properties >> gradle.properties
           echo "signing.password=${{ secrets.GPG_KEY_PASSWORD }}" >> gradle.properties
           echo "" >> gradle.properties >> gradle.properties
