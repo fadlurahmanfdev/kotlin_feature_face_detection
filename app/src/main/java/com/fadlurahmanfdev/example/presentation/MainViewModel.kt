@@ -1,9 +1,9 @@
-package co.id.fadlurahmanfdev.kotlinfeaturefacedetection.presentation
+package com.fadlurahmanfdev.example.presentation
 
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import co.id.fadlurahmanfdev.kotlinfeaturefacedetection.domain.ExampleCorePlatformUseCase
+import com.fadlurahmanfdev.example.domain.ExampleCorePlatformUseCase
 
 class MainViewModel(
     private val exampleCorePlatformUseCase: ExampleCorePlatformUseCase

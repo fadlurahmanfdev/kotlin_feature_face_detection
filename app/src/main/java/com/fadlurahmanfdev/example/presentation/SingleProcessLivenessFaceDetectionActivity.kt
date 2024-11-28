@@ -1,25 +1,28 @@
-package co.id.fadlurahmanfdev.kotlinfeaturefacedetection.presentation
+package com.fadlurahmanfdev.example.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import co.id.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraFacing
-import co.id.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraPurpose
-import co.id.fadlurahmanfdev.kotlin_feature_camera.domain.common.BaseCameraActivity
-import co.id.fadlurahmanfdev.kotlin_feature_camera.other.utility.FeatureCameraUtility
+import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.data.exception.FeatureFaceDetectionException
 import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.domain.plugin.FaceDetectionManager
-import co.id.fadlurahmanfdev.kotlinfeaturefacedetection.R
+import com.fadlurahmanfdev.example.R
+import com.fadlurahmanfdev.example.data.SharedModel
+import com.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraPurpose
+import com.fadlurahmanfdev.kotlin_feature_camera.data.repository.FeatureCameraRepository
+import com.fadlurahmanfdev.kotlin_feature_camera.data.repository.FeatureCameraRepositoryImpl
+import com.fadlurahmanfdev.kotlin_feature_camera.domain.common.BaseCameraActivity
 
 class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
-    BaseCameraActivity.AnalyzeListener,
     FaceDetectionManager.LivenessListener {
     lateinit var cameraPreview: PreviewView
     lateinit var ivFlash: ImageView
@@ -29,18 +32,14 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
     lateinit var tvGuide: TextView
     lateinit var faceDetectionManager: FaceDetectionManager
 
-    override var cameraFacing: FeatureCameraFacing = FeatureCameraFacing.FRONT
+    override var cameraSelector: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
     override var cameraPurpose: FeatureCameraPurpose = FeatureCameraPurpose.IMAGE_ANALYSIS
 
-    override fun onAfterBindCameraToView() {}
+    lateinit var cameraRepository: FeatureCameraRepository
 
-    override fun onCreateBaseCamera(savedInstanceState: Bundle?) {
-        faceDetectionManager = FaceDetectionManager()
-        faceDetectionManager.initialize()
-    }
 
     @ExperimentalGetImage
-    override fun onStartCreateBaseCamera(savedInstanceState: Bundle?) {
+    override fun onCreateBaseCamera(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_single_process_face_detection)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -53,16 +52,26 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
         ivStopCamera = findViewById<ImageView>(R.id.iv_stop_camera)
         ivSwitch = findViewById<ImageView>(R.id.iv_switch_camera)
         tvGuide = findViewById(R.id.tv_guide)
-        addAnalyzeListener(this)
+
+        faceDetectionManager = FaceDetectionManager()
+        faceDetectionManager.initialize()
+
+        cameraRepository = FeatureCameraRepositoryImpl()
 
         ivCamera.setOnClickListener {
             startAnalyze { imageProxy ->
+                tvGuide.visibility = View.VISIBLE
+                ivCamera.visibility = View.GONE
+                ivStopCamera.visibility = View.VISIBLE
                 faceDetectionManager.processLivenessImage(imageProxy, this)
             }
         }
 
         ivStopCamera.setOnClickListener {
-            stopAnalyze()
+//            tvGuide.visibility = View.GONE
+//            ivCamera.visibility = View.VISIBLE
+//            ivStopCamera.visibility = View.GONE
+//            stopAnalyze()
         }
     }
 
@@ -70,54 +79,60 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
         preview.setSurfaceProvider(cameraPreview.surfaceProvider)
     }
 
-    override fun isTorchChanged(isTorch: Boolean) {
-
-    }
-
-    override fun onStartAnalyze() {
-        tvGuide.visibility = View.VISIBLE
-        ivCamera.visibility = View.GONE
-        ivStopCamera.visibility = View.VISIBLE
-    }
-
-    override fun onStopAnalyze() {
-        tvGuide.visibility = View.GONE
-        ivCamera.visibility = View.VISIBLE
-        ivStopCamera.visibility = View.GONE
-    }
+//    override fun onStartAnalyze() {
+//        tvGuide.visibility = View.VISIBLE
+//        ivCamera.visibility = View.GONE
+//        ivStopCamera.visibility = View.VISIBLE
+//    }
+//
+//    override fun onStopAnalyze() {
+//        tvGuide.visibility = View.GONE
+//        ivCamera.visibility = View.VISIBLE
+//        ivStopCamera.visibility = View.GONE
+//    }
 
     override fun onShouldCloseLeftEye(eyeIsClosed: Boolean) {
-        println("ON SHOULD CLOSE LEFT EYE, EYE IS CLOSED: $eyeIsClosed")
+        Log.d(this::class.java.simpleName, "whether user should close left eye")
         tvGuide.text = "TUTUP MATA SEBELAH KIRI"
     }
 
     override fun onClosedLeftEyeSucceed() {
-        println("LEFT EYE CLOSE SUCCEED")
+        Log.d(this::class.java.simpleName, "successfully closed left eye")
     }
 
     override fun onShouldCloseRightEye(eyeIsClosed: Boolean) {
-        println("ON SHOULD CLOSE RIGHT EYE, RIGHT EYE CLOSED: $eyeIsClosed")
+        Log.d(this::class.java.simpleName, "whether user should close right eye")
         tvGuide.text = "TUTUP MATA SEBELAH KANAN"
     }
 
     override fun onClosedRightEyeSucceed() {
-        println("RIGHT EYE CLOSE SUCCEED")
+        Log.d(this::class.java.simpleName, "successfully closed right eye")
     }
 
     override fun onShouldBothEyesOpen(isRightEyeOpen: Boolean, isLeftEyeOpen: Boolean) {
-        println("ASK BOTH EYE KEEP OPEN: RIGHT OPEN: $isRightEyeOpen, LEFT EYE OPEN: $isLeftEyeOpen")
+        Log.d(this::class.java.simpleName, "whether user open both eyes")
         tvGuide.text = "BUKA KEDUA MATA"
     }
 
     override fun onBothEyesOpenSucceed(imageProxy: ImageProxy) {
-        println("MASUK SUKSES BOTH EYES OPEN")
+        Log.d(this::class.java.simpleName, "successfully closed both eyes")
+        tvGuide.visibility = View.GONE
+        ivCamera.visibility = View.VISIBLE
+        ivStopCamera.visibility = View.GONE
         stopAnalyze()
-        FeatureCameraUtility.bitmapImage = FeatureCameraUtility.getBitmapFromImageProxy(imageProxy)
+        SharedModel.bitmap = cameraRepository.getBitmapFromImageProxy(imageProxy)
         val intent = Intent(this, PreviewFaceImageActivity::class.java)
         intent.apply {
             putExtra("FLOW", "LIVENESS")
         }
         startActivity(intent)
     }
+
+    override fun onEmptyFaceDetected(imageProxy: ImageProxy) {}
+
+    override fun onFailureFaceDetection(
+        imageProxy: ImageProxy,
+        exception: FeatureFaceDetectionException
+    ) {}
 
 }

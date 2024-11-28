@@ -1,4 +1,4 @@
-package co.id.fadlurahmanfdev.kotlinfeaturefacedetection.presentation
+package com.fadlurahmanfdev.example.presentation
 
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -9,8 +9,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import co.id.fadlurahmanfdev.kotlin_feature_camera.other.utility.FeatureCameraUtility
-import co.id.fadlurahmanfdev.kotlinfeaturefacedetection.R
+import com.fadlurahmanfdev.example.R
+import com.fadlurahmanfdev.example.data.SharedModel
 
 
 class PreviewFaceImageActivity : AppCompatActivity() {
@@ -44,7 +44,7 @@ class PreviewFaceImageActivity : AppCompatActivity() {
             tvSummary.visibility = View.GONE
         }
 
-        val bitmapImage = FeatureCameraUtility.bitmapImage
+        val bitmapImage = SharedModel.bitmap
 //        val newBitmapImage = Bitmap.createBitmap(
 //            bitmapImage,
 //            (bitmapImage.width * 0.25).toInt(),
@@ -60,7 +60,8 @@ class PreviewFaceImageActivity : AppCompatActivity() {
             bitmapImage.width,
             bitmapImage.height,
         )
+        println("masuk rotation preview: ${SharedModel.rotation}")
         imageView.setImageBitmap(newBitmapImage)
-//        imageView.rotation = FeatureCameraUtility.rotationDegree
+//        imageView.rotation = SharedModel.rotation
     }
 }

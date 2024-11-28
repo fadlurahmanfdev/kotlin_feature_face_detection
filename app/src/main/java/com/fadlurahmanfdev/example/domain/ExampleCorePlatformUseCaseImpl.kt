@@ -1,3 +1,3 @@
-package co.id.fadlurahmanfdev.kotlinfeaturefacedetection.domain
+package com.fadlurahmanfdev.example.domain
 
 class ExampleCorePlatformUseCaseImpl() : ExampleCorePlatformUseCase {}

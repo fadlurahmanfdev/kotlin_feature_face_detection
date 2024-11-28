@@ -1,4 +1,4 @@
-package co.id.fadlurahmanfdev.kotlinfeaturefacedetection.presentation
+package com.fadlurahmanfdev.example.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.domain.plugin.FaceDetectionManager
-import co.id.fadlurahmanfdev.kotlinfeaturefacedetection.R
-import co.id.fadlurahmanfdev.kotlinfeaturefacedetection.data.FeatureModel
+import com.fadlurahmanfdev.example.R
+import com.fadlurahmanfdev.example.data.FeatureModel
 
 class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
     lateinit var viewModel: MainViewModel

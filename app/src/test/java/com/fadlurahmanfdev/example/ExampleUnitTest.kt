@@ -1,4 +1,4 @@
-package co.id.fadlurahmanfdev.kotlinfeaturefacedetection
+package com.fadlurahmanfdev.example
 
 import org.junit.Test
 

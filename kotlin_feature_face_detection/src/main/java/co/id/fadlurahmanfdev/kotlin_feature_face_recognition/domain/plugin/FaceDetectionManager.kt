@@ -52,7 +52,9 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
         if (image != null) {
             val inputImage =
                 getInputImageFromImageProxy(image = image, imageProxy = currentImageProxy)
-            faceDetector.process(inputImage).addOnSuccessListener(this).addOnFailureListener(this)
+            faceDetector.process(inputImage)
+                .addOnSuccessListener(this)
+                .addOnFailureListener(this)
                 .addOnCompleteListener(this)
         } else {
             Log.d(
@@ -63,10 +65,10 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
     }
 
     @ExperimentalGetImage
-    fun processImage(imageProxy: ImageProxy, listener: CaptureListener) {
+    fun processImage(imageProxy: ImageProxy, callback: CaptureListener) {
         processFaceType = ONE_SHOT
         if (captureListener == null) {
-            this.captureListener = listener
+            this.captureListener = callback
         }
         currentImageProxy = imageProxy
         handler.postDelayed(runnableProcessImage, 500)
@@ -89,20 +91,18 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
         handler.removeCallbacks(runnableProcessImage)
     }
 
-    interface CaptureListener {
-        /**
-         * make sure to close imageProxy
-         * */
-        fun onFaceDetected(imageProxy: ImageProxy, face: Face)
-
-        /**
-         * make sure to close imageProxy
-         * */
-        fun onEmptyFaceDetected(imageProxy: ImageProxy)
-        fun onFailureDetectedFace(imageProxy: ImageProxy, exception: FeatureFaceDetectionException)
+    interface FaceDetectorListener {
+        fun onFailureFaceDetection(imageProxy: ImageProxy, exception: FeatureFaceDetectionException)
     }
 
-    interface LivenessListener {
+    interface CaptureListener : FaceDetectorListener {
+        /**
+         * make sure to close imageProxy
+         * */
+        fun onFaceDetected(imageProxy: ImageProxy, faces: List<Face>)
+    }
+
+    interface LivenessListener : FaceDetectorListener {
         fun onShouldCloseLeftEye(eyeIsClosed: Boolean)
         fun onClosedLeftEyeSucceed()
         fun onShouldCloseRightEye(eyeIsClosed: Boolean)
@@ -110,55 +110,66 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
         fun onClosedRightEyeSucceed()
         fun onShouldBothEyesOpen(isRightEyeOpen: Boolean, isLeftEyeOpen: Boolean)
         fun onBothEyesOpenSucceed(imageProxy: ImageProxy)
+
+        fun onEmptyFaceDetected(imageProxy: ImageProxy)
     }
 
     @ExperimentalGetImage
     override fun onSuccess(p0: MutableList<Face>?) {
         val faces = p0 ?: listOf()
-        if (faces.isNotEmpty()) {
-            if (faces.size == 1) {
-                val face = faces.first()
-                when (processFaceType) {
-                    ONE_SHOT -> {
-                        if (captureListener != null) {
-                            processOneShotImage(currentImageProxy, face)
-                        } else {
-                            Log.e(
-                                FaceDetectionManager::class.java.simpleName,
-                                "Failed process oneshot image, listener null"
-                            )
-                        }
-                    }
-
-                    LIVENESS -> {
-                        if (livenessListener != null) {
-                            processLivenessImage(currentImageProxy, face)
-                        } else {
-                            Log.e(
-                                FaceDetectionManager::class.java.simpleName,
-                                "Failed process liveness image, liveness listener null"
-                            )
-                        }
-                    }
+        when (processFaceType) {
+            ONE_SHOT -> {
+                if (captureListener == null) {
+                    Log.w(
+                        this::class.java.simpleName,
+                        "cannot capture listener, captureListener is null"
+                    )
                 }
-            } else {
-                val exception = FeatureFaceDetectionException(
-                    code = "ERR_MULTIPLE_FACES",
-                    message = "Multiple faces detected in the image."
-                )
-                captureListener?.onFailureDetectedFace(currentImageProxy, exception)
+                if (captureListener != null) {
+                    processOneShotImage(currentImageProxy, faces)
+                }
             }
-        } else {
-            captureListener?.onEmptyFaceDetected(currentImageProxy)
+
+            LIVENESS -> {
+                if (livenessListener == null) {
+                    Log.w(
+                        this::class.java.simpleName,
+                        "cannot listen liveness, livenessListener is null"
+                    )
+                }
+                if (livenessListener != null) {
+                    processLivenessImage(currentImageProxy, faces)
+                }
+            }
         }
+//        if (faces.isNotEmpty()) {
+//            if (faces.size == 1) {
+//                val face = faces.first()
+//
+//            } else {
+//                val exception = FeatureFaceDetectionException(
+//                    code = "ERR_MULTIPLE_FACES",
+//                    message = "Multiple faces detected in the image."
+//                )
+//                captureListener?.onFailureFaceDetection(currentImageProxy, exception)
+//            }
+//        } else {
+//            captureListener?.onEmptyFaceDetected(currentImageProxy)
+//        }
     }
 
-    private fun processOneShotImage(imageProxy: ImageProxy, face: Face) {
-        captureListener!!.onFaceDetected(imageProxy, face)
+    private fun processOneShotImage(imageProxy: ImageProxy, faces: List<Face>) {
+        captureListener!!.onFaceDetected(imageProxy, faces)
     }
 
     @ExperimentalGetImage
-    private fun processLivenessImage(imageProxy: ImageProxy, face: Face) {
+    private fun processLivenessImage(imageProxy: ImageProxy, faces: List<Face>) {
+        val face = faces.firstOrNull()
+        if (face == null) {
+            livenessListener?.onEmptyFaceDetected(imageProxy)
+            return
+        }
+
         when {
             !isLeftEyeAlreadyClose -> {
                 // ini mirroring, rightEyeOpenProbability artinya peluang mata kiri user terbuka
@@ -224,7 +235,15 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
             code = "ERR_GENERAL",
             message = p0.message
         )
-        captureListener?.onFailureDetectedFace(currentImageProxy, exception)
+        when (processFaceType) {
+            ONE_SHOT -> {
+                captureListener?.onFailureFaceDetection(currentImageProxy, exception)
+            }
+
+            LIVENESS -> {
+                livenessListener?.onFailureFaceDetection(currentImageProxy, exception)
+            }
+        }
     }
 
     override fun onComplete(p0: Task<MutableList<Face>>) {

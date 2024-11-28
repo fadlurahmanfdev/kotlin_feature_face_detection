@@ -1,4 +1,4 @@
-package co.id.fadlurahmanfdev.kotlinfeaturefacedetection.data
+package com.fadlurahmanfdev.example.data
 
 import androidx.annotation.DrawableRes
 
