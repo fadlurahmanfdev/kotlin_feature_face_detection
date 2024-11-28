@@ -10,22 +10,19 @@
     <androidx.camera.view.PreviewView
         android:id="@+id/cameraPreview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:scaleType="fitCenter" />
 
     <com.fadlurahmanfdev.kotlin_feature_camera.presentation.CircleProgressOverlayView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:backgroundColor="@color/white" />
+        android:layout_height="match_parent" />
 
     <TextView
-        android:id="@+id/tv_guide"
+        android:id="@+id/tv_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="200dp"
-        android:background="@color/white"
-        android:padding="20dp"
-        android:text="GUIDE"
+        android:text="RESULT"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:visibility="invisible"

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "co.id.fadlurahmanfdev.kotlinfeaturefacedetection"
+    namespace = "com.fadlurahmanfdev.example"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "co.id.fadlurahmanfdev.kotlinfeaturefacedetection"
+        applicationId = "com.fadlurahmanfdev.example"
         minSdk = 21
         targetSdk = 34
         versionCode = 1
@@ -45,7 +45,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(project(":feature_face_detection"))
 
-    implementation(project(":kotlin_feature_face_detection"))
-    implementation("com.github.fadlurahmanfdev:kotlin_feature_camera:v0.0.6-beta")
+    implementation("com.fadlurahmanfdev:kotlin_feature_camera:0.1.1")
 }

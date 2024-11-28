@@ -20,6 +20,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Kotlin Feature FaceDetection"
+rootProject.name = "Feature Face Detection"
 include(":app")
-include(":kotlin_feature_face_detection")
+include(":feature_face_detection")
