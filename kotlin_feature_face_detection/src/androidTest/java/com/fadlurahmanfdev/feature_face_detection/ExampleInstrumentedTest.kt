@@ -1,4 +1,4 @@
-package co.id.fadlurahmanfdev.kotlin_feature_face_recognition
+package com.fadlurahmanfdev.feature_face_detection
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
