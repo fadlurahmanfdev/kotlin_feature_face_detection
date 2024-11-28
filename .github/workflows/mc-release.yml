@@ -59,8 +59,5 @@ jobs:
           echo "---------------------------||---------------------------"
           echo "---------------------------||---------------------------"
           echo "---------------------------||---------------------------"
-#          update version
-#          chmod +x update_version.sh
-#          ./update_version.sh kotlin_feature_camera/build.gradle.kts 0.0.1-beta ${{ steps.setup.outputs.release_name }}
           ./gradlew :feature_face_detection:publishMavenPublicationToMavenCentralRepository
           
