@@ -1,4 +1,4 @@
-package co.id.fadlurahmanfdev.kotlin_feature_face_recognition.core.exception
+package com.fadlurahmanfdev.feature_face_detection.core.exception
 
 data class FeatureFaceDetectionException(
     val code: String?,

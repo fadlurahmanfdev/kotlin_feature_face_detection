@@ -10,8 +10,8 @@ import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.core.exception.FeatureFaceDetectionException
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.FeatureFaceDetection
+import com.fadlurahmanfdev.feature_face_detection.core.exception.FeatureFaceDetectionException
+import com.fadlurahmanfdev.feature_face_detection.FeatureFaceDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraPurpose
 import com.fadlurahmanfdev.kotlin_feature_camera.domain.common.BaseCameraActivity

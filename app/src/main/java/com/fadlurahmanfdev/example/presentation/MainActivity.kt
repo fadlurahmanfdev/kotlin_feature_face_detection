@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.FeatureFaceDetection
+import com.fadlurahmanfdev.feature_face_detection.FeatureFaceDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.example.data.FeatureModel
 

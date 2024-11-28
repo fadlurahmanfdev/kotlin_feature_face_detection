@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "co.id.fadlurahmanfdev.kotlin_feature_face_recognition"
+    namespace = "com.fadlurahmanfdev.feature_face_detection"
     compileSdk = 34
 
     defaultConfig {

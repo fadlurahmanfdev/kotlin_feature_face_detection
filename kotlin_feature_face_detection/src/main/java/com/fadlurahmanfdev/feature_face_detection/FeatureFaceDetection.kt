@@ -1,4 +1,4 @@
-package co.id.fadlurahmanfdev.kotlin_feature_face_recognition
+package com.fadlurahmanfdev.feature_face_detection
 
 import android.media.Image
 import android.os.Handler
@@ -6,9 +6,9 @@ import android.os.Looper
 import android.util.Log
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.core.enums.ProcessFaceDetectionType
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.core.enums.ProcessFaceDetectionType.*
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.core.exception.FeatureFaceDetectionException
+import com.fadlurahmanfdev.feature_face_detection.core.enums.ProcessFaceDetectionType
+import com.fadlurahmanfdev.feature_face_detection.core.enums.ProcessFaceDetectionType.*
+import com.fadlurahmanfdev.feature_face_detection.core.exception.FeatureFaceDetectionException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
