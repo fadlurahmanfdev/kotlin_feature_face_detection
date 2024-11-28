@@ -7,13 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.domain.plugin.FaceDetectionManager
+import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.FeatureFaceDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.example.data.FeatureModel
 
 class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
     lateinit var viewModel: MainViewModel
-    lateinit var faceDetectionManager: FaceDetectionManager
+    lateinit var featureFaceDetection: FeatureFaceDetection
 
     private val features: List<FeatureModel> = listOf<FeatureModel>(
         FeatureModel(
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
             insets
         }
         rv = findViewById<RecyclerView>(R.id.rv)
-        faceDetectionManager = FaceDetectionManager()
+        featureFaceDetection = FeatureFaceDetection()
 
         rv.setItemViewCacheSize(features.size)
         rv.setHasFixedSize(true)

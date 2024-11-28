@@ -11,8 +11,8 @@ import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.data.exception.FeatureFaceDetectionException
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.domain.plugin.FaceDetectionManager
+import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.core.exception.FeatureFaceDetectionException
+import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.FeatureFaceDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.example.data.SharedModel
 import com.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraPurpose
@@ -24,12 +24,12 @@ import com.fadlurahmanfdev.kotlin_feature_camera.domain.listener.CameraCaptureLi
 import com.google.mlkit.vision.face.Face
 
 class SingleProcessFaceDetectionActivity : BaseCameraActivity(),
-    FaceDetectionManager.CaptureListener {
+    FeatureFaceDetection.CaptureListener {
     lateinit var cameraPreview: PreviewView
     lateinit var ivFlash: ImageView
     lateinit var ivCamera: ImageView
     lateinit var ivSwitch: ImageView
-    lateinit var faceDetectionManager: FaceDetectionManager
+    lateinit var featureFaceDetection: FeatureFaceDetection
     override var cameraSelector: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
     override var cameraPurpose: FeatureCameraPurpose = FeatureCameraPurpose.IMAGE_CAPTURE
     lateinit var cameraRepository: FeatureCameraRepository
@@ -45,8 +45,8 @@ class SingleProcessFaceDetectionActivity : BaseCameraActivity(),
         ivFlash = findViewById<ImageView>(R.id.iv_flash)
         ivCamera = findViewById<ImageView>(R.id.iv_camera)
         ivSwitch = findViewById<ImageView>(R.id.iv_switch_camera)
-        faceDetectionManager = FaceDetectionManager()
-        faceDetectionManager.initialize()
+        featureFaceDetection = FeatureFaceDetection()
+        featureFaceDetection.initialize()
 
         cameraRepository = FeatureCameraRepositoryImpl()
 
@@ -61,7 +61,7 @@ class SingleProcessFaceDetectionActivity : BaseCameraActivity(),
                     imageProxy: ImageProxy,
                     cameraSelector: CameraSelector
                 ) {
-                    faceDetectionManager.processImage(
+                    featureFaceDetection.processImage(
                         imageProxy,
                         this@SingleProcessFaceDetectionActivity
                     )

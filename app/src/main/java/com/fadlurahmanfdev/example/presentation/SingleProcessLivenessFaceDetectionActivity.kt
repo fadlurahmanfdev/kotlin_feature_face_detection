@@ -13,8 +13,8 @@ import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.data.exception.FeatureFaceDetectionException
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.domain.plugin.FaceDetectionManager
+import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.core.exception.FeatureFaceDetectionException
+import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.FeatureFaceDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.example.data.SharedModel
 import com.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraPurpose
@@ -23,14 +23,14 @@ import com.fadlurahmanfdev.kotlin_feature_camera.data.repository.FeatureCameraRe
 import com.fadlurahmanfdev.kotlin_feature_camera.domain.common.BaseCameraActivity
 
 class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
-    FaceDetectionManager.LivenessListener {
+    FeatureFaceDetection.LivenessListener {
     lateinit var cameraPreview: PreviewView
     lateinit var ivFlash: ImageView
     lateinit var ivCamera: ImageView
     lateinit var ivStopCamera: ImageView
     lateinit var ivSwitch: ImageView
     lateinit var tvGuide: TextView
-    lateinit var faceDetectionManager: FaceDetectionManager
+    lateinit var featureFaceDetection: FeatureFaceDetection
 
     override var cameraSelector: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
     override var cameraPurpose: FeatureCameraPurpose = FeatureCameraPurpose.IMAGE_ANALYSIS
@@ -53,8 +53,8 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
         ivSwitch = findViewById<ImageView>(R.id.iv_switch_camera)
         tvGuide = findViewById(R.id.tv_guide)
 
-        faceDetectionManager = FaceDetectionManager()
-        faceDetectionManager.initialize()
+        featureFaceDetection = FeatureFaceDetection()
+        featureFaceDetection.initialize()
 
         cameraRepository = FeatureCameraRepositoryImpl()
 
@@ -63,7 +63,7 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
                 tvGuide.visibility = View.VISIBLE
                 ivCamera.visibility = View.GONE
                 ivStopCamera.visibility = View.VISIBLE
-                faceDetectionManager.processLivenessImage(imageProxy, this)
+                featureFaceDetection.processLivenessImage(imageProxy, this)
             }
         }
 

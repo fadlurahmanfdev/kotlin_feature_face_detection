@@ -1,4 +1,4 @@
-package co.id.fadlurahmanfdev.kotlin_feature_face_recognition.domain.plugin
+package co.id.fadlurahmanfdev.kotlin_feature_face_recognition
 
 import android.media.Image
 import android.os.Handler
@@ -6,9 +6,9 @@ import android.os.Looper
 import android.util.Log
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.data.enums.ProcessFaceDetectionType
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.data.enums.ProcessFaceDetectionType.*
-import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.data.exception.FeatureFaceDetectionException
+import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.core.enums.ProcessFaceDetectionType
+import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.core.enums.ProcessFaceDetectionType.*
+import co.id.fadlurahmanfdev.kotlin_feature_face_recognition.core.exception.FeatureFaceDetectionException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
@@ -20,7 +20,7 @@ import com.google.mlkit.vision.face.FaceDetector
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import java.lang.Exception
 
-class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureListener,
+class FeatureFaceDetection : OnCompleteListener<MutableList<Face>>, OnFailureListener,
     OnSuccessListener<MutableList<Face>> {
     private lateinit var faceDetector: FaceDetector
     private var captureListener: CaptureListener? = null
@@ -58,7 +58,7 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
                 .addOnCompleteListener(this)
         } else {
             Log.d(
-                FaceDetectionManager::class.java.simpleName,
+                FeatureFaceDetection::class.java.simpleName,
                 "image inside imageProxy didn't detected"
             )
         }
@@ -231,6 +231,7 @@ class FaceDetectionManager : OnCompleteListener<MutableList<Face>>, OnFailureLis
     }
 
     override fun onFailure(p0: Exception) {
+        Log.e(this::class.java.simpleName, "failed face detection: ${p0.message}")
         val exception = FeatureFaceDetectionException(
             code = "ERR_GENERAL",
             message = p0.message
