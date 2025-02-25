@@ -33,7 +33,13 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
             title = "Liveness Process Face Detection",
             desc = "Liveness Process Face Detection",
             enum = "LIVENESS_FACE_DETECTION_PROCESS"
-        )
+        ),
+        FeatureModel(
+            featureIcon = R.drawable.baseline_developer_mode_24,
+            title = "Liveness ML Kit Face Detection",
+            desc = "Liveness ML Kit Face Detection",
+            enum = "LIVENESS_MLKIT_FACE_DETECTION"
+        ),
     )
 
     private lateinit var rv: RecyclerView
@@ -73,6 +79,10 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
             }
             "LIVENESS_FACE_DETECTION_PROCESS" -> {
                 val intent = Intent(this, SingleProcessLivenessFaceDetectionActivity::class.java)
+                startActivity(intent)
+            }
+            "LIVENESS_MLKIT_FACE_DETECTION" -> {
+                val intent = Intent(this, LivenessMLKitFaceDetectionActivity2::class.java)
                 startActivity(intent)
             }
         }
