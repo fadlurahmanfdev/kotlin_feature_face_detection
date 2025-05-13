@@ -30,7 +30,7 @@ class TensorFlowCaptureCameraActivity : BaseCameraActivity(),
     lateinit var ivCamera: ImageView
     lateinit var ivSwitch: ImageView
     lateinit var featureFaceDetection: FeatureFaceDetection
-    override var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+    override var cameraSelector: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
     override var cameraPurpose: FeatureCameraPurpose = FeatureCameraPurpose.IMAGE_CAPTURE
     lateinit var cameraRepository: FeatureCameraRepository
 
@@ -57,7 +57,7 @@ class TensorFlowCaptureCameraActivity : BaseCameraActivity(),
                 @ExperimentalGetImage
                 override fun onCaptureSuccess(
                     imageProxy: ImageProxy,
-                    cameraSelector: CameraSelector
+                    cameraSelector: CameraSelector,
                 ) {
                     featureFaceDetection.processImage(
                         imageProxy,
@@ -65,6 +65,14 @@ class TensorFlowCaptureCameraActivity : BaseCameraActivity(),
                     )
                 }
             })
+        }
+
+        ivSwitch.setOnClickListener {
+            if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
+                switchCameraFacing(CameraSelector.DEFAULT_FRONT_CAMERA)
+            } else {
+                switchCameraFacing(CameraSelector.DEFAULT_BACK_CAMERA)
+            }
         }
     }
 
@@ -93,7 +101,7 @@ class TensorFlowCaptureCameraActivity : BaseCameraActivity(),
 
     override fun onFailureFaceDetection(
         imageProxy: ImageProxy,
-        exception: LiveFaceXException
+        exception: LiveFaceXException,
     ) {
         Log.d(this::class.java.simpleName, "empty failure face detection: ${exception.code}")
         finish()
