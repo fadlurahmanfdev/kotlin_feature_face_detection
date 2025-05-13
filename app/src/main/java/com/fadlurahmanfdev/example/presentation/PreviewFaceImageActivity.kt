@@ -41,7 +41,7 @@ class PreviewFaceImageActivity : AppCompatActivity() {
                     "\nLEFT EYE OPEN PROBABILITY: $leftEyeOpenProbability" +
                     "\nRIGHT EYE OPEN PROBABILITY: $rightEyeOpenProbability"
         } else {
-            tvSummary.visibility = View.VISIBLE
+            tvSummary.visibility = View.INVISIBLE
         }
 
         val bitmapImage = SharedModel.bitmap

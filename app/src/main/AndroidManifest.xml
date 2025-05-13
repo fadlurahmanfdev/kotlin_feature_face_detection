@@ -17,19 +17,28 @@
         android:theme="@style/Theme.KotlinFeatureFaceDetection"
         tools:targetApi="31">
         <activity
-            android:name="com.fadlurahmanfdev.example.presentation.PreviewFaceImageActivity"
+            android:name=".presentation.PreviewLivenessMLKitFaceDetectionActivity"
             android:exported="false" />
         <activity
-            android:name="com.fadlurahmanfdev.example.presentation.StreamFaceDetectionActivity"
+            android:name=".presentation.TensorFlowCaptureCameraActivity"
             android:exported="false" />
         <activity
-            android:name="com.fadlurahmanfdev.example.presentation.SingleProcessLivenessFaceDetectionActivity"
+            android:name=".presentation.TensorFlowFaceDetectionPickImageActivity"
             android:exported="false" />
         <activity
-            android:name="com.fadlurahmanfdev.example.presentation.SingleProcessFaceDetectionActivity"
+            android:name=".presentation.PreviewFaceImageActivity"
             android:exported="false" />
         <activity
-            android:name="com.fadlurahmanfdev.example.presentation.MainActivity"
+            android:name=".presentation.StreamFaceDetectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.SingleProcessLivenessFaceDetectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.SingleProcessFaceDetectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

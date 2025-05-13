@@ -33,7 +33,19 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
             title = "Liveness Process Face Detection",
             desc = "Liveness Process Face Detection",
             enum = "LIVENESS_FACE_DETECTION_PROCESS"
-        )
+        ),
+        FeatureModel(
+            featureIcon = R.drawable.baseline_developer_mode_24,
+            title = "Pick Image for Liveness Face Detection Using Tensor Flow",
+            desc = "Pick Image for Liveness Face Detection Using Tensor Flow",
+            enum = "TENSORFLOW_PICK_IMAGE_LIVENESS_FACE_DETECTION"
+        ),
+        FeatureModel(
+            featureIcon = R.drawable.baseline_developer_mode_24,
+            title = "Capture Liveness Face Detection Using Tensor Flow",
+            desc = "Capture Liveness Face Detection Using Tensor Flow",
+            enum = "TENSORFLOW_CAPTURE_CAMERA_LIVENESS_FACE_DETECTION"
+        ),
     )
 
     private lateinit var rv: RecyclerView
@@ -73,6 +85,14 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
             }
             "LIVENESS_FACE_DETECTION_PROCESS" -> {
                 val intent = Intent(this, SingleProcessLivenessFaceDetectionActivity::class.java)
+                startActivity(intent)
+            }
+            "TENSORFLOW_PICK_IMAGE_LIVENESS_FACE_DETECTION" -> {
+                val intent = Intent(this, TensorFlowFaceDetectionPickImageActivity::class.java)
+                startActivity(intent)
+            }
+            "TENSORFLOW_CAPTURE_CAMERA_LIVENESS_FACE_DETECTION" -> {
+                val intent = Intent(this, TensorFlowCaptureCameraActivity::class.java)
                 startActivity(intent)
             }
         }

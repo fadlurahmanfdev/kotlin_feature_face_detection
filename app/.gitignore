@@ -1,1 +1,6 @@
 /build
+
+src/main/assets/*.tflite
+
+*.tflite
+google-services.json

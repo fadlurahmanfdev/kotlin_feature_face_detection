@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -33,6 +34,10 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    aaptOptions {
+        noCompress("tflite")
+    }
 }
 
 dependencies {
@@ -48,4 +53,14 @@ dependencies {
     implementation(project(":feature_face_detection"))
 
     implementation("com.fadlurahmanfdev:kotlin_feature_camera:0.1.1")
+    implementation("com.fadlurahmanfdev:pixmed:0.0.1")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+
+    implementation("org.tensorflow:tensorflow-lite:2.17.0")
+    implementation("org.tensorflow:tensorflow-lite-select-tf-ops:2.16.1")
+    implementation("org.tensorflow:tensorflow-lite-support:0.5.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0") // Coroutine core
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0") // Coroutine Android support
 }
