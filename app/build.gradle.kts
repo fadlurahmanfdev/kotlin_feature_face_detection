@@ -53,6 +53,7 @@ dependencies {
     implementation(project(":feature_face_detection"))
 
     implementation("com.fadlurahmanfdev:kotlin_feature_camera:0.1.1")
+    implementation("com.fadlurahmanfdev:pixmed:0.0.1")
 
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
 

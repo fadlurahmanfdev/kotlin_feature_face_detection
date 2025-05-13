@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
                 startActivity(intent)
             }
             "LIVENESS_MLKIT_FACE_DETECTION" -> {
-                val intent = Intent(this, LivenessMLKitFaceDetectionActivity::class.java)
+                val intent = Intent(this, LivenessMLKitFaceDetectionActivity2::class.java)
                 startActivity(intent)
             }
         }

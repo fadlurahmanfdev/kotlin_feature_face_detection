@@ -11,7 +11,7 @@ import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.fadlurahmanfdev.feature_face_detection.core.exception.FeatureFaceDetectionException
+import com.fadlurahmanfdev.feature_face_detection.exception.LiveFaceXException
 import com.fadlurahmanfdev.feature_face_detection.FeatureFaceDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.example.data.SharedModel
@@ -93,7 +93,7 @@ class LivenessMLKitFaceDetectionActivity2 : BaseCameraActivity(),
 
     override fun onFailureFaceDetection(
         imageProxy: ImageProxy,
-        exception: FeatureFaceDetectionException
+        exception: LiveFaceXException
     ) {
         Log.d(this::class.java.simpleName, "empty failure face detection: ${exception.code}")
         finish()

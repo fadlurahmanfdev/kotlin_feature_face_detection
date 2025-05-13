@@ -50,6 +50,10 @@ dependencies {
     api("com.google.mlkit:face-detection:16.1.6")
     val camerax_version = "1.3.3"
     implementation("androidx.camera:camera-core:${camerax_version}")
+
+    api("org.tensorflow:tensorflow-lite:2.17.0")
+    api("org.tensorflow:tensorflow-lite-select-tf-ops:2.16.1")
+    api("org.tensorflow:tensorflow-lite-support:0.5.0")
 }
 
 mavenPublishing {

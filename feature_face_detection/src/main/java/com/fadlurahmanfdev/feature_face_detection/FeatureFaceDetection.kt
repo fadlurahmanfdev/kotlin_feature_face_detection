@@ -8,7 +8,7 @@ import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
 import com.fadlurahmanfdev.feature_face_detection.core.enums.ProcessFaceDetectionType
 import com.fadlurahmanfdev.feature_face_detection.core.enums.ProcessFaceDetectionType.*
-import com.fadlurahmanfdev.feature_face_detection.core.exception.FeatureFaceDetectionException
+import com.fadlurahmanfdev.feature_face_detection.exception.LiveFaceXException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
@@ -92,7 +92,7 @@ class FeatureFaceDetection : OnCompleteListener<MutableList<Face>>, OnFailureLis
     }
 
     interface FaceDetectorListener {
-        fun onFailureFaceDetection(imageProxy: ImageProxy, exception: FeatureFaceDetectionException)
+        fun onFailureFaceDetection(imageProxy: ImageProxy, exception: LiveFaceXException)
     }
 
     interface CaptureListener : FaceDetectorListener {
@@ -232,7 +232,7 @@ class FeatureFaceDetection : OnCompleteListener<MutableList<Face>>, OnFailureLis
 
     override fun onFailure(p0: Exception) {
         Log.e(this::class.java.simpleName, "failed face detection: ${p0.message}")
-        val exception = FeatureFaceDetectionException(
+        val exception = LiveFaceXException(
             code = "ERR_GENERAL",
             message = p0.message
         )

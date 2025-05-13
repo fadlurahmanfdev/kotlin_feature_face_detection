@@ -7,4 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".presentation.LivenessMLKitFaceDetectionActivity">
 
+    <ImageView
+        android:id="@+id/iv_photo"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_liveness_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LIVENESS: ??"
+        app:layout_constraintTop_toBottomOf="@id/iv_photo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

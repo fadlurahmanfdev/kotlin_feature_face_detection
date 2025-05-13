@@ -10,7 +10,7 @@ import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.fadlurahmanfdev.feature_face_detection.core.exception.FeatureFaceDetectionException
+import com.fadlurahmanfdev.feature_face_detection.exception.LiveFaceXException
 import com.fadlurahmanfdev.feature_face_detection.FeatureFaceDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraPurpose
@@ -81,7 +81,7 @@ class StreamFaceDetectionActivity : BaseCameraActivity(), FeatureFaceDetection.C
 
     override fun onFailureFaceDetection(
         imageProxy: ImageProxy,
-        exception: FeatureFaceDetectionException
+        exception: LiveFaceXException
     ) {
         tvResult.visibility = View.VISIBLE
         tvResult.text = "FAILURE DETECTED FACE ${exception.message} & ${exception.code}"

@@ -35,7 +35,6 @@ class LivenessFeature {
 
     // Preprocess input data
     private fun preprocessInput(inputData: Array<Array<Array<Array<FloatArray>>>>): ByteBuffer {
-        Log.d(this::class.java.simpleName, "TEST-LOG %%% 3 - PRE PROCESS INPUT")
         val inputShape = intArrayOf(1, 16, 224, 224, 3) // Input shape from your model
         val byteBuffer = ByteBuffer.allocateDirect(1 * 16 * 224 * 224 * 3 * 4) // 4 bytes per float
         byteBuffer.order(ByteOrder.nativeOrder())
@@ -56,7 +55,7 @@ class LivenessFeature {
 
     // Run inference
     fun runInference(inputData: Array<Array<Array<Array<FloatArray>>>>, callback: (Float) -> Unit) {
-        Log.d(this::class.java.simpleName, "TEST-LOG %%% RUN INFERENCE")
+        Log.d(this::class.java.simpleName, "LiveFaceX-LOG %%% RUN INFERENCE")
         scope.launch {
             withContext(Dispatchers.Default){
                 val inputBuffer = preprocessInput(inputData)
@@ -67,7 +66,7 @@ class LivenessFeature {
 
                 outputBuffer.rewind()
                 val output = outputBuffer.float
-                Log.d(this::class.java.simpleName, "TEST-LOG %%% 3 - OUTPUT: ${output}")
+                Log.d(this::class.java.simpleName, "LiveFaceX-LOG %%% 3 - OUTPUT: ${output}")
                 withContext(Dispatchers.Main){
                     callback(output)
                 }
