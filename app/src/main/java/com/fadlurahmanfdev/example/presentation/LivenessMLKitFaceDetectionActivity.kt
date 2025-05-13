@@ -62,7 +62,7 @@ class LivenessMLKitFaceDetectionActivity : AppCompatActivity() {
         scope.launch {
             withContext(Dispatchers.Default) {
                 val bitmaps = List(1) {
-                    BitmapFactory.decodeResource(resources, R.drawable.selfie_2)
+                    BitmapFactory.decodeResource(resources, R.drawable.selfie_spoof)
                 }
                 resizedBitmaps = bitmaps.map { bitmap ->
                     Bitmap.createScaledBitmap(bitmap, 224, 224, true)

@@ -23,6 +23,9 @@
             android:name=".presentation.LivenessMLKitFaceDetectionActivity2"
             android:exported="false" />
         <activity
+            android:name=".presentation.LivenessMLKitFaceDetectionActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.PreviewFaceImageActivity"
             android:exported="false" />
         <activity
