@@ -23,7 +23,7 @@ import com.fadlurahmanfdev.kotlin_feature_camera.domain.common.BaseCameraActivit
 import com.fadlurahmanfdev.kotlin_feature_camera.domain.listener.CameraCaptureListener
 import com.google.mlkit.vision.face.Face
 
-class LivenessMLKitFaceDetectionActivity2 : BaseCameraActivity(),
+class TensorFlowCaptureCameraActivity : BaseCameraActivity(),
     FeatureFaceDetection.CaptureListener {
     lateinit var cameraPreview: PreviewView
     lateinit var ivFlash: ImageView
@@ -61,7 +61,7 @@ class LivenessMLKitFaceDetectionActivity2 : BaseCameraActivity(),
                 ) {
                     featureFaceDetection.processImage(
                         imageProxy,
-                        this@LivenessMLKitFaceDetectionActivity2
+                        this@TensorFlowCaptureCameraActivity
                     )
                 }
             })

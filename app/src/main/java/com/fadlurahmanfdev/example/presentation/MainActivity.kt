@@ -36,9 +36,15 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
         ),
         FeatureModel(
             featureIcon = R.drawable.baseline_developer_mode_24,
-            title = "Liveness ML Kit Face Detection",
-            desc = "Liveness ML Kit Face Detection",
-            enum = "LIVENESS_MLKIT_FACE_DETECTION"
+            title = "Pick Image for Liveness Face Detection Using Tensor Flow",
+            desc = "Pick Image for Liveness Face Detection Using Tensor Flow",
+            enum = "TENSORFLOW_PICK_IMAGE_LIVENESS_FACE_DETECTION"
+        ),
+        FeatureModel(
+            featureIcon = R.drawable.baseline_developer_mode_24,
+            title = "Capture Liveness Face Detection Using Tensor Flow",
+            desc = "Capture Liveness Face Detection Using Tensor Flow",
+            enum = "TENSORFLOW_CAPTURE_CAMERA_LIVENESS_FACE_DETECTION"
         ),
     )
 
@@ -81,8 +87,12 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
                 val intent = Intent(this, SingleProcessLivenessFaceDetectionActivity::class.java)
                 startActivity(intent)
             }
-            "LIVENESS_MLKIT_FACE_DETECTION" -> {
-                val intent = Intent(this, LivenessMLKitFaceDetectionActivity2::class.java)
+            "TENSORFLOW_PICK_IMAGE_LIVENESS_FACE_DETECTION" -> {
+                val intent = Intent(this, TensorFlowFaceDetectionPickImageActivity::class.java)
+                startActivity(intent)
+            }
+            "TENSORFLOW_CAPTURE_CAMERA_LIVENESS_FACE_DETECTION" -> {
+                val intent = Intent(this, TensorFlowCaptureCameraActivity::class.java)
                 startActivity(intent)
             }
         }

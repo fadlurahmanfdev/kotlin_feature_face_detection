@@ -26,10 +26,18 @@ class CustomKitLiveFaceX {
         onSuccess: (Array<Array<Array<Array<FloatArray>>>>) -> Unit,
         onFailure: (LiveFaceXException) -> Unit,
     ) {
+        val bitmap = BitmapFactory.decodeFile(path)
+        generateInputDataFromBitmap(bitmap = bitmap, onSuccess = onSuccess, onFailure = onFailure)
+    }
+
+    fun generateInputDataFromBitmap(
+        bitmap: Bitmap,
+        onSuccess: (Array<Array<Array<Array<FloatArray>>>>) -> Unit,
+        onFailure: (LiveFaceXException) -> Unit,
+    ) {
         scope.launch {
             try {
                 withContext(Dispatchers.Default) {
-                    val bitmap = BitmapFactory.decodeFile(path)
                     val resizedBitmap = Bitmap.createScaledBitmap(bitmap, 224, 224, true)
 
                     val result = Array(1) { // batch size

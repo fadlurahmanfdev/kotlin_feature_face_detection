@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class LivenessMLKitFaceDetectionActivity : AppCompatActivity() {
+class TensorFlowFaceDetectionPickImageActivity : AppCompatActivity() {
     //    lateinit var livenessFeature: LivenessFeature
     lateinit var livenessFeature: CustomKitLiveFaceX
     lateinit var pixMed: PixMed
@@ -63,7 +63,7 @@ class LivenessMLKitFaceDetectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_liveness_detection_feature)
+        setContentView(R.layout.activity_tensor_flow_face_detection_pick_image)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

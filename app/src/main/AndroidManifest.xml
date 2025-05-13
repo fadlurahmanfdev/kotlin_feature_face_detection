@@ -20,10 +20,10 @@
             android:name=".presentation.PreviewLivenessMLKitFaceDetectionActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.LivenessMLKitFaceDetectionActivity2"
+            android:name=".presentation.TensorFlowCaptureCameraActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.LivenessMLKitFaceDetectionActivity"
+            android:name=".presentation.TensorFlowFaceDetectionPickImageActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.PreviewFaceImageActivity"
