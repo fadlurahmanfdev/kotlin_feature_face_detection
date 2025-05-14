@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.fadlurahmanfdev.example.R
-import com.fadlurahmanfdev.feature_face_detection.CustomKitLiveFaceX
+import com.fadlurahmanfdev.feature_face_detection.TensorflowLiveFaceX
 import com.fadlurahmanfdev.pixmed.PixMed
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +25,7 @@ import java.io.File
 
 class TensorFlowFaceDetectionPickImageActivity : AppCompatActivity() {
     //    lateinit var livenessFeature: LivenessFeature
-    lateinit var livenessFeature: CustomKitLiveFaceX
+    lateinit var livenessFeature: TensorflowLiveFaceX
     lateinit var pixMed: PixMed
     private val scope = CoroutineScope(Dispatchers.Default)
     private lateinit var ivPhoto: ImageView
@@ -72,7 +72,7 @@ class TensorFlowFaceDetectionPickImageActivity : AppCompatActivity() {
         ivPhoto = findViewById(R.id.iv_photo)
         tvLivenessScore = findViewById(R.id.tv_liveness_score)
 
-        livenessFeature = CustomKitLiveFaceX()
+        livenessFeature = TensorflowLiveFaceX()
         pixMed = PixMed()
         livenessFeature.initialize(
             "liveness_model.tflite", this,

@@ -17,7 +17,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.channels.FileChannel
 
-class CustomKitLiveFaceX {
+class TensorflowLiveFaceX {
     private val scope = CoroutineScope(Dispatchers.Default)
     lateinit var interpreter: Interpreter
 

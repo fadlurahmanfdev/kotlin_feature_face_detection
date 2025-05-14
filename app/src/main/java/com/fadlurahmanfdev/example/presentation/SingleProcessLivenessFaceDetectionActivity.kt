@@ -14,7 +14,7 @@ import androidx.camera.view.PreviewView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.fadlurahmanfdev.feature_face_detection.exception.LiveFaceXException
-import com.fadlurahmanfdev.feature_face_detection.FeatureFaceDetection
+import com.fadlurahmanfdev.feature_face_detection.LiveFaceXDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.example.data.SharedModel
 import com.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraPurpose
@@ -23,14 +23,14 @@ import com.fadlurahmanfdev.kotlin_feature_camera.data.repository.FeatureCameraRe
 import com.fadlurahmanfdev.kotlin_feature_camera.domain.common.BaseCameraActivity
 
 class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
-    FeatureFaceDetection.LivenessListener {
+    LiveFaceXDetection.LivenessListener {
     lateinit var cameraPreview: PreviewView
     lateinit var ivFlash: ImageView
     lateinit var ivCamera: ImageView
     lateinit var ivStopCamera: ImageView
     lateinit var ivSwitch: ImageView
     lateinit var tvGuide: TextView
-    lateinit var featureFaceDetection: FeatureFaceDetection
+    lateinit var liveFaceXDetection: LiveFaceXDetection
 
     override var cameraSelector: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
     override var cameraPurpose: FeatureCameraPurpose = FeatureCameraPurpose.IMAGE_ANALYSIS
@@ -53,8 +53,8 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
         ivSwitch = findViewById<ImageView>(R.id.iv_switch_camera)
         tvGuide = findViewById(R.id.tv_guide)
 
-        featureFaceDetection = FeatureFaceDetection()
-        featureFaceDetection.initialize()
+        liveFaceXDetection = LiveFaceXDetection()
+        liveFaceXDetection.initialize()
 
         cameraRepository = FeatureCameraRepositoryImpl()
 
@@ -63,7 +63,7 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
                 tvGuide.visibility = View.VISIBLE
                 ivCamera.visibility = View.GONE
                 ivStopCamera.visibility = View.VISIBLE
-                featureFaceDetection.processLivenessImage(imageProxy, this)
+                liveFaceXDetection.processLivenessImage(imageProxy, this)
             }
         }
 

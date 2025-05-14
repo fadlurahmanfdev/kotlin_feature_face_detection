@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.example.data.SharedModel
-import com.fadlurahmanfdev.feature_face_detection.CustomKitLiveFaceX
+import com.fadlurahmanfdev.feature_face_detection.TensorflowLiveFaceX
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 class PreviewLivenessMLKitFaceDetectionActivity : AppCompatActivity() {
     lateinit var imageView: ImageView
     lateinit var tvSummary: TextView
-    lateinit var livenessFeature: CustomKitLiveFaceX
+    lateinit var livenessFeature: TensorflowLiveFaceX
     private val scope = CoroutineScope(Dispatchers.Default)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,7 @@ class PreviewLivenessMLKitFaceDetectionActivity : AppCompatActivity() {
         )
         imageView.setImageBitmap(newBitmapImage)
 
-        livenessFeature = CustomKitLiveFaceX()
+        livenessFeature = TensorflowLiveFaceX()
         livenessFeature.initialize(
             "liveness_model.tflite", this,
             onSuccess = {

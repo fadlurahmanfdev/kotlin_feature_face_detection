@@ -6,8 +6,9 @@ import android.os.Looper
 import android.util.Log
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
-import com.fadlurahmanfdev.feature_face_detection.core.enums.ProcessFaceDetectionType
-import com.fadlurahmanfdev.feature_face_detection.core.enums.ProcessFaceDetectionType.*
+import com.fadlurahmanfdev.feature_face_detection.core.constant.LiveFaceXExceptionConstant
+import com.fadlurahmanfdev.feature_face_detection.core.enums.LiveFaceXDetectionType
+import com.fadlurahmanfdev.feature_face_detection.core.enums.LiveFaceXDetectionType.*
 import com.fadlurahmanfdev.feature_face_detection.exception.LiveFaceXException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
@@ -20,19 +21,30 @@ import com.google.mlkit.vision.face.FaceDetector
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import java.lang.Exception
 
-class FeatureFaceDetection : OnCompleteListener<MutableList<Face>>, OnFailureListener,
+class LiveFaceXDetection : OnCompleteListener<MutableList<Face>>, OnFailureListener,
     OnSuccessListener<MutableList<Face>> {
     private lateinit var faceDetector: FaceDetector
     private var captureListener: CaptureListener? = null
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var currentImageProxy: ImageProxy
-    private lateinit var processFaceType: ProcessFaceDetectionType
+    private lateinit var processFaceType: LiveFaceXDetectionType
 
+    /**
+     * Initialize face detector instance using default performance mode accurate
+     * */
     fun initialize() {
         val option = FaceDetectorOptions.Builder()
             .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
             .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
             .build()
+        initialize(option)
+    }
+
+    /**
+     * Initialize face detector option as a param
+     * @param option face detector options to set performance mode, classification
+     * */
+    fun initialize(option: FaceDetectorOptions) {
         faceDetector = FaceDetection.getClient(option)
     }
 
@@ -57,14 +69,18 @@ class FeatureFaceDetection : OnCompleteListener<MutableList<Face>>, OnFailureLis
                 .addOnFailureListener(this)
                 .addOnCompleteListener(this)
         } else {
-            Log.d(
-                FeatureFaceDetection::class.java.simpleName,
-                "image inside imageProxy didn't detected"
+            Log.w(
+                LiveFaceXDetection::class.java.simpleName,
+                "LiveFaceX-LOG %%% image inside imageProxy is null"
             )
         }
     }
 
-    @ExperimentalGetImage
+    /**
+     * Process single capture face detection. If there is face detected, it showed in [CaptureListener.onFaceDetected]
+     * @param imageProxy image proxy get from capture camera result
+     * @param callback capture listener
+     * */
     fun processImage(imageProxy: ImageProxy, callback: CaptureListener) {
         processFaceType = ONE_SHOT
         if (captureListener == null) {
@@ -76,7 +92,11 @@ class FeatureFaceDetection : OnCompleteListener<MutableList<Face>>, OnFailureLis
 
     private var livenessListener: LivenessListener? = null
 
-    @ExperimentalGetImage
+    /**
+     * Process single capture face detection. If there is face detected, it showed in [CaptureListener.onFaceDetected]
+     * @param imageProxy image proxy get from capture camera result
+     * @param listener capture listener
+     * */
     fun processLivenessImage(imageProxy: ImageProxy, listener: LivenessListener) {
         processFaceType = LIVENESS
         if (livenessListener == null) {
@@ -112,50 +132,6 @@ class FeatureFaceDetection : OnCompleteListener<MutableList<Face>>, OnFailureLis
         fun onBothEyesOpenSucceed(imageProxy: ImageProxy)
 
         fun onEmptyFaceDetected(imageProxy: ImageProxy)
-    }
-
-    @ExperimentalGetImage
-    override fun onSuccess(p0: MutableList<Face>?) {
-        val faces = p0 ?: listOf()
-        when (processFaceType) {
-            ONE_SHOT -> {
-                if (captureListener == null) {
-                    Log.w(
-                        this::class.java.simpleName,
-                        "cannot capture listener, captureListener is null"
-                    )
-                }
-                if (captureListener != null) {
-                    processOneShotImage(currentImageProxy, faces)
-                }
-            }
-
-            LIVENESS -> {
-                if (livenessListener == null) {
-                    Log.w(
-                        this::class.java.simpleName,
-                        "cannot listen liveness, livenessListener is null"
-                    )
-                }
-                if (livenessListener != null) {
-                    processLivenessImage(currentImageProxy, faces)
-                }
-            }
-        }
-//        if (faces.isNotEmpty()) {
-//            if (faces.size == 1) {
-//                val face = faces.first()
-//
-//            } else {
-//                val exception = FeatureFaceDetectionException(
-//                    code = "ERR_MULTIPLE_FACES",
-//                    message = "Multiple faces detected in the image."
-//                )
-//                captureListener?.onFailureFaceDetection(currentImageProxy, exception)
-//            }
-//        } else {
-//            captureListener?.onEmptyFaceDetected(currentImageProxy)
-//        }
     }
 
     private fun processOneShotImage(imageProxy: ImageProxy, faces: List<Face>) {
@@ -230,12 +206,39 @@ class FeatureFaceDetection : OnCompleteListener<MutableList<Face>>, OnFailureLis
         }
     }
 
+    override fun onSuccess(p0: MutableList<Face>?) {
+        val faces = p0 ?: listOf()
+        when (processFaceType) {
+            ONE_SHOT -> {
+                if (captureListener == null) {
+                    Log.w(
+                        this::class.java.simpleName,
+                        "LiveFaceX-LOG %%% cannot capture listener, captureListener is null"
+                    )
+                }
+
+                if (captureListener != null) {
+                    processOneShotImage(currentImageProxy, faces)
+                }
+            }
+
+            LIVENESS -> {
+                if (livenessListener == null) {
+                    Log.w(
+                        this::class.java.simpleName,
+                        "LiveFaceX-LOG %%% cannot listen liveness, livenessListener is null"
+                    )
+                }
+                if (livenessListener != null) {
+                    processLivenessImage(currentImageProxy, faces)
+                }
+            }
+        }
+    }
+
     override fun onFailure(p0: Exception) {
-        Log.e(this::class.java.simpleName, "failed face detection: ${p0.message}")
-        val exception = LiveFaceXException(
-            code = "ERR_GENERAL",
-            message = p0.message
-        )
+        Log.e(this::class.java.simpleName, "LiveFaceX-LOG %%% failed to face detection: ${p0.message}", p0)
+        val exception = LiveFaceXExceptionConstant.UNKNOWN.copy(message = p0.message)
         when (processFaceType) {
             ONE_SHOT -> {
                 captureListener?.onFailureFaceDetection(currentImageProxy, exception)
@@ -248,7 +251,6 @@ class FeatureFaceDetection : OnCompleteListener<MutableList<Face>>, OnFailureLis
     }
 
     override fun onComplete(p0: Task<MutableList<Face>>) {
-        Log.d(this::class.java.simpleName, "complete face detection: $processFaceType")
         currentImageProxy.close()
     }
 }
