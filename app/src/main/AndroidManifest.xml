@@ -6,6 +6,8 @@
 
     <uses-feature android:name="android.hardware.camera" />
 
+    <uses-sdk tools:overrideLibrary="com.zimperium.zdetection" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KotlinFeatureFaceDetection"
         tools:targetApi="31">
+        <activity
+            android:name=".presentation.VidaFaceLivenessActivity"
+            android:exported="false" />
         <activity
             android:name=".presentation.PreviewLivenessMLKitFaceDetectionActivity"
             android:exported="false" />
@@ -46,6 +51,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="vida_activation_key"
+            android:value="${vidaActivationKey}" />
     </application>
 
 </manifest>
