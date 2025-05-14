@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fadlurahmanfdev.feature_face_detection.FeatureFaceDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.example.data.FeatureModel
+import com.fadlurahmanfdev.example.presentation.adapter.ListExampleAdapter
+import com.fadlurahmanfdev.example.presentation.view_model.MainViewModel
 
 class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
     lateinit var viewModel: MainViewModel
@@ -45,6 +47,12 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
             title = "Capture Liveness Face Detection Using Tensor Flow",
             desc = "Capture Liveness Face Detection Using Tensor Flow",
             enum = "TENSORFLOW_CAPTURE_CAMERA_LIVENESS_FACE_DETECTION"
+        ),
+        FeatureModel(
+            featureIcon = R.drawable.baseline_developer_mode_24,
+            title = "Vida Liveness",
+            desc = "Vida Liveness",
+            enum = "VIDA_LIVENESS"
         ),
     )
 
@@ -93,6 +101,10 @@ class MainActivity : AppCompatActivity(), ListExampleAdapter.Callback {
             }
             "TENSORFLOW_CAPTURE_CAMERA_LIVENESS_FACE_DETECTION" -> {
                 val intent = Intent(this, TensorFlowCaptureCameraActivity::class.java)
+                startActivity(intent)
+            }
+            "VIDA_LIVENESS" -> {
+                val intent = Intent(this, VidaFaceLivenessActivity::class.java)
                 startActivity(intent)
             }
         }

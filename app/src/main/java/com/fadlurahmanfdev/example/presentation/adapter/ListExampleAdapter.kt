@@ -1,4 +1,4 @@
-package com.fadlurahmanfdev.example.presentation
+package com.fadlurahmanfdev.example.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View

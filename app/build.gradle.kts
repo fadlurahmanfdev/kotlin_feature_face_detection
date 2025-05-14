@@ -1,8 +1,15 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
 }
+
+val securePropertiesFile = rootProject.file("secure.properties")
+val secureProperties = Properties()
+secureProperties.load(FileInputStream(securePropertiesFile))
 
 android {
     namespace = "com.fadlurahmanfdev.example"
@@ -16,6 +23,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -38,6 +49,30 @@ android {
     aaptOptions {
         noCompress("tflite")
     }
+
+    flavorDimensions.add("app")
+
+    productFlavors {
+        create("pocvida"){
+            dimension = "app"
+            applicationId = secureProperties["PACKAGE_NAME"] as String
+            buildConfigField("String", "VIDA_API_KEY", "\"${secureProperties["API_KEY"] as String}\"")
+            buildConfigField("String", "VIDA_LICENSE_KEY", "\"${secureProperties["LICENSE_KEY"] as String}\"")
+            buildConfigField("String", "VIDA_ACTIVATION_KEY", "\"${secureProperties["ACTIVATION_KEY"] as String}\"")
+            addManifestPlaceholders(mapOf(
+                "vidaActivationKey" to  secureProperties["ACTIVATION_KEY"] as String
+            ))
+        }
+
+        create("example"){
+            dimension = "app"
+            applicationId = "com.fadlurahmanfdev.example"
+            resValue("String", "vidaActivationKey", "fake")
+            addManifestPlaceholders(mapOf(
+                "vidaActivationKey" to  "fake"
+            ))
+        }
+    }
 }
 
 dependencies {
@@ -57,10 +92,9 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
 
-    implementation("org.tensorflow:tensorflow-lite:2.17.0")
-    implementation("org.tensorflow:tensorflow-lite-select-tf-ops:2.16.1")
-    implementation("org.tensorflow:tensorflow-lite-support:0.5.0")
-
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0") // Coroutine core
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0") // Coroutine Android support
+
+    implementation("id.vida:liveness-sandbox:1.7.5")
+
 }
