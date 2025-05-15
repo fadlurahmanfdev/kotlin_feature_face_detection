@@ -17,6 +17,9 @@ import com.fadlurahmanfdev.feature_face_detection.exception.LiveFaceXException
 import com.fadlurahmanfdev.feature_face_detection.LiveFaceXDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.example.data.SharedModel
+import com.fadlurahmanfdev.feature_face_detection.core.enums.LiveFaceXGesture
+import com.fadlurahmanfdev.feature_face_detection.core.enums.LiveFaceXGesture.*
+import com.fadlurahmanfdev.feature_face_detection.dto.LiveFaceXEyeBlinked
 import com.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraPurpose
 import com.fadlurahmanfdev.kotlin_feature_camera.data.repository.FeatureCameraRepository
 import com.fadlurahmanfdev.kotlin_feature_camera.data.repository.FeatureCameraRepositoryImpl
@@ -63,15 +66,33 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
                 tvGuide.visibility = View.VISIBLE
                 ivCamera.visibility = View.GONE
                 ivStopCamera.visibility = View.VISIBLE
-                liveFaceXDetection.processLivenessImage(imageProxy, this)
+                liveFaceXDetection.processLivenessImage(
+                    imageProxy = imageProxy, listOf(
+                        LiveFaceXEyeBlinked(
+                            type = LEFT_EYE_BLINK,
+                            blinkedThreshold = 0.8,
+                            blinkedThresholdCount = 2,
+                        ),
+                        LiveFaceXEyeBlinked(
+                            type = RIGHT_EYE_BLINK,
+                            blinkedThreshold = 0.8,
+                            blinkedThresholdCount = 2,
+                        ),
+                        LiveFaceXEyeBlinked(
+                            type = BLINK,
+                            blinkedThreshold = 0.8,
+                            blinkedThresholdCount = 2,
+                        ),
+                    ), this
+                )
             }
         }
 
         ivStopCamera.setOnClickListener {
-//            tvGuide.visibility = View.GONE
-//            ivCamera.visibility = View.VISIBLE
-//            ivStopCamera.visibility = View.GONE
-//            stopAnalyze()
+            tvGuide.visibility = View.GONE
+            ivCamera.visibility = View.VISIBLE
+            ivStopCamera.visibility = View.GONE
+            stopAnalyze()
         }
     }
 
@@ -91,31 +112,38 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
 //        ivStopCamera.visibility = View.GONE
 //    }
 
-    override fun onShouldCloseLeftEye(eyeIsClosed: Boolean) {
-        Log.d(this::class.java.simpleName, "whether user should close left eye")
-        tvGuide.text = "TUTUP MATA SEBELAH KIRI"
+    override fun onAskedLivenessVerification(gesture: LiveFaceXGesture) {
+        when (gesture) {
+            LEFT_EYE_BLINK -> {
+                tvGuide.text = "KEDIPKAN MATA SEBELAH KIRI"
+            }
+
+            RIGHT_EYE_BLINK -> {
+                tvGuide.text = "KEDIPKAN MATA SEBELAH KANAN"
+            }
+
+            BLINK -> {
+                tvGuide.text = "KEDIPKAN KEDUA BELAH MATA"
+            }
+        }
     }
 
-    override fun onClosedLeftEyeSucceed() {
-        Log.d(this::class.java.simpleName, "successfully closed left eye")
+    override fun onResetLivenessVerification() {
+        tvGuide.text = "RESET LIVENESS"
     }
 
-    override fun onShouldCloseRightEye(eyeIsClosed: Boolean) {
-        Log.d(this::class.java.simpleName, "whether user should close right eye")
-        tvGuide.text = "TUTUP MATA SEBELAH KANAN"
+    override fun onAskedLivenessVerificationSucceed(
+        gesture: LiveFaceXGesture,
+        imageProxy: ImageProxy
+    ) {
+        tvGuide.text = "BERHASIL"
     }
 
-    override fun onClosedRightEyeSucceed() {
-        Log.d(this::class.java.simpleName, "successfully closed right eye")
+    override fun onEmptyFaceDetected(imageProxy: ImageProxy) {
+        tvGuide.text = "HADAPKAN MUKA KE KAMERA"
     }
 
-    override fun onShouldBothEyesOpen(isRightEyeOpen: Boolean, isLeftEyeOpen: Boolean) {
-        Log.d(this::class.java.simpleName, "whether user open both eyes")
-        tvGuide.text = "BUKA KEDUA MATA"
-    }
-
-    override fun onBothEyesOpenSucceed(imageProxy: ImageProxy) {
-        Log.d(this::class.java.simpleName, "successfully closed both eyes")
+    override fun onSuccessfullyLivenessVerification(imageProxy: ImageProxy) {
         tvGuide.visibility = View.GONE
         ivCamera.visibility = View.VISIBLE
         ivStopCamera.visibility = View.GONE
@@ -124,8 +152,6 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
         if (cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA) {
             bitmapImage = cameraRepository.mirrorHorizontalBitmap(bitmapImage)
         }
-        println("MASUK BITMAP IMAGE WIDTH: ${bitmapImage.width}")
-        println("MASUK BITMAP IMAGE HEIGHT: ${bitmapImage.height}")
         SharedModel.bitmap = bitmapImage
         val intent = Intent(this, PreviewFaceImageActivity::class.java)
         intent.apply {
@@ -134,11 +160,9 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
         startActivity(intent)
     }
 
-    override fun onEmptyFaceDetected(imageProxy: ImageProxy) {}
-
     override fun onFailureFaceDetection(
         imageProxy: ImageProxy,
-        exception: LiveFaceXException
+        exception: LiveFaceXException,
     ) {}
 
 }

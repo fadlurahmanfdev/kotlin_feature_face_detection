@@ -67,7 +67,9 @@ android {
         create("example"){
             dimension = "environment"
             applicationId = "com.fadlurahmanfdev.example"
-            resValue("String", "vidaActivationKey", "fake")
+            buildConfigField("String", "VIDA_API_KEY", "\"incorrect-flavor-apps\"")
+            buildConfigField("String", "VIDA_LICENSE_KEY", "\"incorrect-flavor-apps\"")
+            buildConfigField("String", "VIDA_ACTIVATION_KEY", "\"incorrect-flavor-apps\"")
             addManifestPlaceholders(mapOf(
                 "vidaActivationKey" to  "fake"
             ))
