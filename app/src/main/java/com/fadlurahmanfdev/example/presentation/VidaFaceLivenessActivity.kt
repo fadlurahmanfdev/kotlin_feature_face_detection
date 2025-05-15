@@ -61,7 +61,7 @@ class VidaFaceLivenessActivity : AppCompatActivity() {
                     override fun onSuccess(p0: VidaLivenessResponse?) {
                         Log.d(
                             this@VidaFaceLivenessActivity::class.java.simpleName,
-                            "Example-Vida-LOG %%% on success vida liveness response"
+                            "Example-Vida-LOG %%% on success vida liveness response: ${p0?.livenessScore}"
                         )
                     }
 

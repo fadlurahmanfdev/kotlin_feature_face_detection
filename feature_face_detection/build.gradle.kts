@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("maven-publish")
-
     id("com.vanniktech.maven.publish") version "0.29.0"
 }
 
