@@ -38,6 +38,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Feature Face Detection"
+rootProject.name = "LiveFaceX"
 include(":app")
 include(":livefacex")
