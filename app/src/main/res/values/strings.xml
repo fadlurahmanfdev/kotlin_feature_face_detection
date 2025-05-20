@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Kotlin Feature FaceDetection</string>
-    <string name="vida_tutorial_screen_instruction_text"></string>
+    <string name="app_name">LiveFaceX</string>
+    <string name="vida_tutorial_screen_instruction_text">Pastikan bahwa pencahayaan cukup</string>
 </resources>

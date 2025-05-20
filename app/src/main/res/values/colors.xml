@@ -2,5 +2,5 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primary_color">#9F0000</color>
+    <color name="primary_color">#FFFF810D</color>
 </resources>

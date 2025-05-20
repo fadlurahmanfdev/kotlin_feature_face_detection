@@ -1,10 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.KotlinFeatureFaceDetection" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="vida_primary_cta_background_color">@color/primary_color</item>
     </style>
 
-    <style name="Theme.KotlinFeatureFaceDetection" parent="Base.Theme.KotlinFeatureFaceDetection" />
+    <style name="Theme.KotlinFeatureFaceDetection" parent="Base.Theme.KotlinFeatureFaceDetection">
+    </style>
+
+    <style name="VIDALivenessTheme" parent="VIDA.Liveness.Theme.Default">
+        <item name="vida_tutorial_screen_wearing_hat_text_font_size">10sp</item>
+    </style>
 </resources>

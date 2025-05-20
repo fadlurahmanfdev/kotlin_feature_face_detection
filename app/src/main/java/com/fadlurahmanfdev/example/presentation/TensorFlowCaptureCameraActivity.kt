@@ -12,7 +12,7 @@ import androidx.camera.view.PreviewView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.fadlurahmanfdev.feature_face_detection.exception.LiveFaceXException
-import com.fadlurahmanfdev.feature_face_detection.FeatureFaceDetection
+import com.fadlurahmanfdev.feature_face_detection.LiveFaceXDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.example.data.SharedModel
 import com.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraPurpose
@@ -24,12 +24,12 @@ import com.fadlurahmanfdev.kotlin_feature_camera.domain.listener.CameraCaptureLi
 import com.google.mlkit.vision.face.Face
 
 class TensorFlowCaptureCameraActivity : BaseCameraActivity(),
-    FeatureFaceDetection.CaptureListener {
+    LiveFaceXDetection.CaptureListener {
     lateinit var cameraPreview: PreviewView
     lateinit var ivFlash: ImageView
     lateinit var ivCamera: ImageView
     lateinit var ivSwitch: ImageView
-    lateinit var featureFaceDetection: FeatureFaceDetection
+    lateinit var liveFaceXDetection: LiveFaceXDetection
     override var cameraSelector: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
     override var cameraPurpose: FeatureCameraPurpose = FeatureCameraPurpose.IMAGE_CAPTURE
     lateinit var cameraRepository: FeatureCameraRepository
@@ -45,8 +45,8 @@ class TensorFlowCaptureCameraActivity : BaseCameraActivity(),
         ivFlash = findViewById<ImageView>(R.id.iv_flash)
         ivCamera = findViewById<ImageView>(R.id.iv_camera)
         ivSwitch = findViewById<ImageView>(R.id.iv_switch_camera)
-        featureFaceDetection = FeatureFaceDetection()
-        featureFaceDetection.initialize()
+        liveFaceXDetection = LiveFaceXDetection()
+        liveFaceXDetection.initialize()
 
         cameraRepository = FeatureCameraRepositoryImpl()
 
@@ -59,7 +59,7 @@ class TensorFlowCaptureCameraActivity : BaseCameraActivity(),
                     imageProxy: ImageProxy,
                     cameraSelector: CameraSelector,
                 ) {
-                    featureFaceDetection.processImage(
+                    liveFaceXDetection.processImage(
                         imageProxy,
                         this@TensorFlowCaptureCameraActivity
                     )

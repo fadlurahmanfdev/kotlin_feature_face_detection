@@ -50,11 +50,11 @@ android {
         noCompress("tflite")
     }
 
-    flavorDimensions.add("app")
+    flavorDimensions.add("environment")
 
     productFlavors {
         create("pocvida"){
-            dimension = "app"
+            dimension = "environment"
             applicationId = secureProperties["PACKAGE_NAME"] as String
             buildConfigField("String", "VIDA_API_KEY", "\"${secureProperties["API_KEY"] as String}\"")
             buildConfigField("String", "VIDA_LICENSE_KEY", "\"${secureProperties["LICENSE_KEY"] as String}\"")
@@ -65,9 +65,11 @@ android {
         }
 
         create("example"){
-            dimension = "app"
+            dimension = "environment"
             applicationId = "com.fadlurahmanfdev.example"
-            resValue("String", "vidaActivationKey", "fake")
+            buildConfigField("String", "VIDA_API_KEY", "\"incorrect-flavor-apps\"")
+            buildConfigField("String", "VIDA_LICENSE_KEY", "\"incorrect-flavor-apps\"")
+            buildConfigField("String", "VIDA_ACTIVATION_KEY", "\"incorrect-flavor-apps\"")
             addManifestPlaceholders(mapOf(
                 "vidaActivationKey" to  "fake"
             ))
@@ -95,6 +97,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0") // Coroutine core
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0") // Coroutine Android support
 
-    implementation("id.vida:liveness-sandbox:1.7.5")
+    add("pocvidaImplementation", "id.vida:liveness-sandbox:1.7.5")
+    add("exampleImplementation", "id.vida:liveness-sandbox:1.7.5")
 
 }

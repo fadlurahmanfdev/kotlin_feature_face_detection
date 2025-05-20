@@ -11,20 +11,20 @@ import androidx.camera.view.PreviewView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.fadlurahmanfdev.feature_face_detection.exception.LiveFaceXException
-import com.fadlurahmanfdev.feature_face_detection.FeatureFaceDetection
+import com.fadlurahmanfdev.feature_face_detection.LiveFaceXDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraPurpose
 import com.fadlurahmanfdev.kotlin_feature_camera.domain.common.BaseCameraActivity
 import com.google.mlkit.vision.face.Face
 
-class StreamFaceDetectionActivity : BaseCameraActivity(), FeatureFaceDetection.CaptureListener {
+class StreamFaceDetectionActivity : BaseCameraActivity(), LiveFaceXDetection.CaptureListener {
     lateinit var cameraPreview: PreviewView
     lateinit var ivFlash: ImageView
     lateinit var ivCamera: ImageView
     lateinit var ivStopCamera: ImageView
     lateinit var ivSwitch: ImageView
     lateinit var tvResult: TextView
-    lateinit var featureFaceDetection: FeatureFaceDetection
+    lateinit var liveFaceXDetection: LiveFaceXDetection
 
     override var cameraSelector: CameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
     override var cameraPurpose: FeatureCameraPurpose = FeatureCameraPurpose.IMAGE_ANALYSIS
@@ -43,12 +43,12 @@ class StreamFaceDetectionActivity : BaseCameraActivity(), FeatureFaceDetection.C
         ivSwitch = findViewById<ImageView>(R.id.iv_switch_camera)
         tvResult = findViewById(R.id.tv_result)
 
-        featureFaceDetection = FeatureFaceDetection()
-        featureFaceDetection.initialize()
+        liveFaceXDetection = LiveFaceXDetection()
+        liveFaceXDetection.initialize()
 
         ivCamera.setOnClickListener {
             startAnalyze { imageProxy ->
-                featureFaceDetection.processImage(imageProxy, this)
+                liveFaceXDetection.processImage(imageProxy, this)
             }
         }
 

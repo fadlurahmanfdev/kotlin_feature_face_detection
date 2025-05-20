@@ -16,6 +16,7 @@
     <com.fadlurahmanfdev.kotlin_feature_camera.presentation.CircleProgressOverlayView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:opacity="1"
         app:backgroundColor="@color/white" />
 
     <TextView
