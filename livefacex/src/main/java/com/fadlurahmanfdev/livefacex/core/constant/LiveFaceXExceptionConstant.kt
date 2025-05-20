@@ -1,6 +1,6 @@
-package com.fadlurahmanfdev.feature_face_detection.core.constant
+package com.fadlurahmanfdev.livefacex.core.constant
 
-import com.fadlurahmanfdev.feature_face_detection.exception.LiveFaceXException
+import com.fadlurahmanfdev.livefacex.exception.LiveFaceXException
 
 object LiveFaceXExceptionConstant {
     val UNKNOWN = LiveFaceXException(

@@ -2,7 +2,6 @@ package com.fadlurahmanfdev.example.presentation
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,13 +12,13 @@ import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.fadlurahmanfdev.feature_face_detection.exception.LiveFaceXException
-import com.fadlurahmanfdev.feature_face_detection.LiveFaceXDetection
+import com.fadlurahmanfdev.livefacex.exception.LiveFaceXException
+import com.fadlurahmanfdev.livefacex.LiveFaceXDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.example.data.SharedModel
-import com.fadlurahmanfdev.feature_face_detection.core.enums.LiveFaceXGesture
-import com.fadlurahmanfdev.feature_face_detection.core.enums.LiveFaceXGesture.*
-import com.fadlurahmanfdev.feature_face_detection.dto.LiveFaceXEyeBlinked
+import com.fadlurahmanfdev.livefacex.core.enums.LiveFaceXGesture
+import com.fadlurahmanfdev.livefacex.core.enums.LiveFaceXGesture.*
+import com.fadlurahmanfdev.livefacex.dto.LiveFaceXEyeBlinked
 import com.fadlurahmanfdev.kotlin_feature_camera.data.enums.FeatureCameraPurpose
 import com.fadlurahmanfdev.kotlin_feature_camera.data.repository.FeatureCameraRepository
 import com.fadlurahmanfdev.kotlin_feature_camera.data.repository.FeatureCameraRepositoryImpl

@@ -1,4 +1,4 @@
-package com.fadlurahmanfdev.feature_face_detection
+package com.fadlurahmanfdev.livefacex
 
 import android.media.Image
 import android.os.Handler
@@ -6,14 +6,14 @@ import android.os.Looper
 import android.util.Log
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
-import com.fadlurahmanfdev.feature_face_detection.core.constant.LiveFaceXExceptionConstant
-import com.fadlurahmanfdev.feature_face_detection.core.enums.LiveFaceXDetectionType
-import com.fadlurahmanfdev.feature_face_detection.core.enums.LiveFaceXDetectionType.*
-import com.fadlurahmanfdev.feature_face_detection.core.enums.LiveFaceXGesture
-import com.fadlurahmanfdev.feature_face_detection.core.enums.LiveFaceXGesture.*
-import com.fadlurahmanfdev.feature_face_detection.dto.LiveFaceXEyeBlinked
-import com.fadlurahmanfdev.feature_face_detection.dto.LiveFaceXGestureModel
-import com.fadlurahmanfdev.feature_face_detection.exception.LiveFaceXException
+import com.fadlurahmanfdev.livefacex.core.constant.LiveFaceXExceptionConstant
+import com.fadlurahmanfdev.livefacex.core.enums.LiveFaceXDetectionType
+import com.fadlurahmanfdev.livefacex.core.enums.LiveFaceXDetectionType.*
+import com.fadlurahmanfdev.livefacex.core.enums.LiveFaceXGesture
+import com.fadlurahmanfdev.livefacex.core.enums.LiveFaceXGesture.*
+import com.fadlurahmanfdev.livefacex.dto.LiveFaceXEyeBlinked
+import com.fadlurahmanfdev.livefacex.dto.LiveFaceXGestureModel
+import com.fadlurahmanfdev.livefacex.exception.LiveFaceXException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener

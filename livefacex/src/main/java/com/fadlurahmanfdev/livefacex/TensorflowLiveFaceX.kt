@@ -1,12 +1,12 @@
-package com.fadlurahmanfdev.feature_face_detection
+package com.fadlurahmanfdev.livefacex
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.util.Log
-import com.fadlurahmanfdev.feature_face_detection.core.constant.LiveFaceXExceptionConstant
-import com.fadlurahmanfdev.feature_face_detection.exception.LiveFaceXException
+import com.fadlurahmanfdev.livefacex.core.constant.LiveFaceXExceptionConstant
+import com.fadlurahmanfdev.livefacex.exception.LiveFaceXException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

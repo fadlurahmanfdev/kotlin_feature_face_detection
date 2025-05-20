@@ -87,7 +87,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(project(":feature_face_detection"))
+    implementation(project(":livefacex"))
 
     implementation("com.fadlurahmanfdev:kotlin_feature_camera:0.1.1")
     implementation("com.fadlurahmanfdev:pixmed:0.0.1")

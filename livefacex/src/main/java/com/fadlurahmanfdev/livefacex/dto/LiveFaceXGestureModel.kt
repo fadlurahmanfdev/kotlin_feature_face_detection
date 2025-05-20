@@ -1,6 +1,6 @@
-package com.fadlurahmanfdev.feature_face_detection.dto
+package com.fadlurahmanfdev.livefacex.dto
 
-import com.fadlurahmanfdev.feature_face_detection.core.enums.LiveFaceXGesture
+import com.fadlurahmanfdev.livefacex.core.enums.LiveFaceXGesture
 
 open class LiveFaceXGestureModel(
     open val type: LiveFaceXGesture,

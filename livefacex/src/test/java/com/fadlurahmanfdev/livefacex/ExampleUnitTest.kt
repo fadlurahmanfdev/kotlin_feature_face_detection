@@ -1,4 +1,4 @@
-package com.fadlurahmanfdev.feature_face_detection
+package com.fadlurahmanfdev.livefacex
 
 import org.junit.Test
 
