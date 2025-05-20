@@ -1,4 +1,4 @@
-package com.fadlurahmanfdev.feature_face_detection.core.enums
+package com.fadlurahmanfdev.livefacex.core.enums
 
 enum class LiveFaceXGesture {
     LEFT_EYE_BLINK,

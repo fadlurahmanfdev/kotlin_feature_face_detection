@@ -1,4 +1,4 @@
-package com.fadlurahmanfdev.feature_face_detection.exception
+package com.fadlurahmanfdev.livefacex.exception
 
 data class LiveFaceXException(
     val code: String?,

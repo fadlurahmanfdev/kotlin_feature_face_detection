@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.fadlurahmanfdev.feature_face_detection.LiveFaceXDetection
+import com.fadlurahmanfdev.livefacex.LiveFaceXDetection
 import com.fadlurahmanfdev.example.R
 import com.fadlurahmanfdev.example.data.FeatureModel
 import com.fadlurahmanfdev.example.presentation.adapter.ListExampleAdapter

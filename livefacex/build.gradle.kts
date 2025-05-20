@@ -9,7 +9,7 @@ plugins {
 
 
 android {
-    namespace = "com.fadlurahmanfdev.feature_face_detection"
+    namespace = "com.fadlurahmanfdev.livefacex"
     compileSdk = 34
 
     defaultConfig {
@@ -39,16 +39,16 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+//    implementation(libs.androidx.core.ktx)
+//    implementation(libs.androidx.appcompat)
+//    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     api("com.google.mlkit:face-detection:16.1.6")
-    val camerax_version = "1.3.3"
-    implementation("androidx.camera:camera-core:${camerax_version}")
+    val cameraxVersion = "1.3.3"
+    implementation("androidx.camera:camera-core:${cameraxVersion}")
 
     api("org.tensorflow:tensorflow-lite:2.17.0")
     api("org.tensorflow:tensorflow-lite-select-tf-ops:2.16.1")
@@ -59,12 +59,12 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("com.fadlurahmanfdev", "feature_face_detection", "0.0.1")
+    coordinates("com.fadlurahmanfdev", "livefacex", "0.0.1")
 
     pom {
-        name.set("Kotlin Library Feature Face Detection")
+        name.set("LiveFaceX")
         description.set("Android Library to simplified face detection (include liveness)")
-        inceptionYear.set("2024")
+        inceptionYear.set("2025")
         url.set("https://github.com/fadlurahmanfdev/kotlin_feature_face_detection/")
         licenses {
             license {
