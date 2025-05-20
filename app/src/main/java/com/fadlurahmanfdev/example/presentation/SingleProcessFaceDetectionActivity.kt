@@ -94,6 +94,9 @@ class SingleProcessFaceDetectionActivity : BaseCameraActivity(),
         }
 
         val face = faces.first()
+        Log.d(this::class.java.simpleName, "smiling probability: ${face.smilingProbability}")
+        Log.d(this::class.java.simpleName, "left eye probability: ${face.leftEyeOpenProbability}")
+        Log.d(this::class.java.simpleName, "right eye probability: ${face.rightEyeOpenProbability}")
         val intent = Intent(this, PreviewFaceImageActivity::class.java)
         intent.apply {
             putExtra("FLOW", "CAPTURE")

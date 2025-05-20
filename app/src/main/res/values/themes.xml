@@ -4,10 +4,9 @@
     </style>
 
     <style name="Theme.KotlinFeatureFaceDetection" parent="Base.Theme.KotlinFeatureFaceDetection">
-        <item name="vida_primary_cta_background_color">@color/primary_color</item>
     </style>
 
     <style name="VIDALivenessTheme" parent="VIDA.Liveness.Theme.Default">
-        <item name="vida_primary_cta_background_color">@color/primary_color</item>
+        <item name="vida_tutorial_screen_wearing_hat_text_font_size">10sp</item>
     </style>
 </resources>

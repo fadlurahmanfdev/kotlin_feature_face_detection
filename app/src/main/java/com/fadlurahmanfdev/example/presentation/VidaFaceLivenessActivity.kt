@@ -11,7 +11,11 @@ import com.fadlurahmanfdev.example.BuildConfig
 import com.fadlurahmanfdev.example.R
 import id.vida.liveness.VidaLiveness
 import id.vida.liveness.config.VidaFaceDetectionOption
+import id.vida.liveness.config.VidaUICustomizationOption
+import id.vida.liveness.constants.CameraType
 import id.vida.liveness.constants.Gestures
+import id.vida.liveness.constants.Shape
+import id.vida.liveness.constants.VIDAScreenFlow
 import id.vida.liveness.dto.VidaLivenessRequest
 import id.vida.liveness.dto.VidaLivenessResponse
 import id.vida.liveness.listeners.VidaLivenessListener
@@ -43,7 +47,6 @@ class VidaFaceLivenessActivity : AppCompatActivity() {
             val allowedGestures = hashSetOf<Gestures>()
             allowedGestures.add(Gestures.BLINK)
             allowedGestures.add(Gestures.SMILE)
-            allowedGestures.add(Gestures.SHAKE_HEAD)
 
             val weakReference = WeakReference<Activity>(this)
             vidaLiveness = VidaLiveness.VidaLivenessBuilder.newInstance(
@@ -92,9 +95,16 @@ class VidaFaceLivenessActivity : AppCompatActivity() {
                             .setEnableActiveLiveness(true)
                             .setDetectionTimeout(5000)
                     )
+                ).setUICustomizationOptions(
+                    VidaUICustomizationOption.VidaUICustomizationOptionBuilder.newInstance()
+                        .setMaxRetryAttempt(3)
+                        .setCameraType(CameraType.FRONT)
+                        .setOverlayShape(Shape.SQUARE)
+                        .setShowReviewScreen(true)
+                        .build()
                 ).build()
             vidaLiveness.initialize()
-        }catch (e:Throwable){
+        } catch (e: Throwable) {
             Log.e(
                 this@VidaFaceLivenessActivity::class.java.simpleName,
                 "Example-Vida-LOG %%% failed vida liveness", e
