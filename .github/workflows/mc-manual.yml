@@ -48,5 +48,5 @@ jobs:
           echo "---------------------------||---------------------------"
           echo "---------------------------||---------------------------"
           echo "---------------------------||---------------------------"
-          ./gradlew :feature_face_detection:publishMavenPublicationToMavenCentralRepository
+          ./gradlew :livefacex:publishMavenPublicationToMavenCentralRepository
           
