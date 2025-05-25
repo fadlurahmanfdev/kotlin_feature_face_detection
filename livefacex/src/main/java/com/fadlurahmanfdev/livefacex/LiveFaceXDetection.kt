@@ -27,6 +27,9 @@ import java.lang.Exception
 import java.util.Calendar
 import java.util.Date
 
+/**
+ * Class to handle Face Detection with Firebase.
+ * */
 class LiveFaceXDetection : OnCompleteListener<MutableList<Face>>, OnFailureListener,
     OnSuccessListener<MutableList<Face>> {
     private lateinit var faceDetector: FaceDetector
@@ -124,7 +127,7 @@ class LiveFaceXDetection : OnCompleteListener<MutableList<Face>>, OnFailureListe
      * */
     @ExperimentalGetImage
     fun processImage(imageProxy: ImageProxy, callback: CaptureListener) {
-        processFaceType = ONE_SHOT
+        processFaceType = CAPTURE
         if (captureListener == null) {
             this.captureListener = callback
         }
@@ -443,7 +446,7 @@ class LiveFaceXDetection : OnCompleteListener<MutableList<Face>>, OnFailureListe
     override fun onSuccess(p0: MutableList<Face>?) {
         val faces = p0 ?: listOf()
         when (processFaceType) {
-            ONE_SHOT -> {
+            CAPTURE -> {
                 if (captureListener == null) {
                     Log.w(
                         this::class.java.simpleName,
@@ -477,7 +480,7 @@ class LiveFaceXDetection : OnCompleteListener<MutableList<Face>>, OnFailureListe
     override fun onFailure(p0: Exception) {
         val exception = LiveFaceXExceptionConstant.UNKNOWN.copy(message = p0.message)
         when (processFaceType) {
-            ONE_SHOT -> {
+            CAPTURE -> {
                 captureListener?.onFailureFaceDetection(currentImageProxy, exception)
             }
 

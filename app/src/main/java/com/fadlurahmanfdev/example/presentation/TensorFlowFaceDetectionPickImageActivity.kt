@@ -43,7 +43,7 @@ class TensorFlowFaceDetectionPickImageActivity : AppCompatActivity() {
                 livenessFeature.generateInputDataFromFile(
                     mediaItem.path,
                     onSuccess = { inputData ->
-                        livenessFeature.runInference(
+                        livenessFeature.detectLivenessScore(
                             inputData,
                             onSuccess = { score ->
                                 tvLivenessScore.text = "LIVENESS: ${score}"
@@ -74,7 +74,7 @@ class TensorFlowFaceDetectionPickImageActivity : AppCompatActivity() {
 
         livenessFeature = TensorflowLiveFaceX()
         pixMed = PixMed()
-        livenessFeature.initialize(
+        livenessFeature.initializeModel(
             "liveness_model.tflite", this,
             onSuccess = {
                 Log.d(

@@ -46,7 +46,7 @@ class PreviewLivenessMLKitFaceDetectionActivity : AppCompatActivity() {
         imageView.setImageBitmap(newBitmapImage)
 
         livenessFeature = TensorflowLiveFaceX()
-        livenessFeature.initialize(
+        livenessFeature.initializeModel(
             "liveness_model.tflite", this,
             onSuccess = {
                 Log.d(
@@ -56,9 +56,10 @@ class PreviewLivenessMLKitFaceDetectionActivity : AppCompatActivity() {
                 livenessFeature.generateInputDataFromBitmap(
                     bitmap = bitmapImage,
                     onSuccess = { inputData ->
-                        livenessFeature.runInference(
+                        livenessFeature.detectLivenessScore(
                             inputData,
                             onSuccess = { livenessScore ->
+                                Log.d(this::class.java.simpleName, "LiveFaceX-LOG %%% tensorflow liveness score: $livenessScore")
                                 tvSummary.text = "LIVENESS: $livenessScore"
                             },
                             onFailure = { processLivenessException ->
