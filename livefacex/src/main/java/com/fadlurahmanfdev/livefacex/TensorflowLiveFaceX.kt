@@ -17,10 +17,20 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.channels.FileChannel
 
+/**
+ * Class to handle face detection using Tensorflow
+ * */
 class TensorflowLiveFaceX {
     private val scope = CoroutineScope(Dispatchers.Default)
     lateinit var interpreter: Interpreter
 
+    /**
+     * Generate input data from file that later will be used by [detectLivenessScore]
+     *
+     * @param path input file path
+     * @param onSuccess callback if input data generated successfully
+     * @param onFailure callback if failed to generated input data
+     * */
     fun generateInputDataFromFile(
         path: String,
         onSuccess: (Array<Array<Array<Array<FloatArray>>>>) -> Unit,
@@ -30,6 +40,13 @@ class TensorflowLiveFaceX {
         generateInputDataFromBitmap(bitmap = bitmap, onSuccess = onSuccess, onFailure = onFailure)
     }
 
+    /**
+     * Generate input data from bitmap
+     *
+     * @param bitmap bitmap of an image
+     * @param onSuccess callback if input data generated successfully
+     * @param onFailure callback if failed to generated input data
+     * */
     fun generateInputDataFromBitmap(
         bitmap: Bitmap,
         onSuccess: (Array<Array<Array<Array<FloatArray>>>>) -> Unit,
@@ -79,7 +96,14 @@ class TensorflowLiveFaceX {
         }
     }
 
-    fun initialize(
+    /**
+     * Initialize custom tensor flow model
+     *
+     * @param assetFileName assets file name that will be initialized
+     * @param onSuccess callback if input data generated successfully
+     * @param onFailure callback if failed to generated input data
+     * */
+    fun initializeModel(
         assetFileName: String,
         context: Context,
         onSuccess: () -> Unit,
@@ -126,8 +150,16 @@ class TensorflowLiveFaceX {
         return byteBuffer
     }
 
-    // Run inference
-    fun runInference(
+    /**
+     * Detect liveness score from custom model.
+     *
+     * Before using this methode, do [initializeModel] first.
+     *
+     * @param inputData input data that generated from [generateInputDataFromFile] or [generateInputDataFromBitmap]
+     * @param onSuccess callback when successfully detect liveness
+     * @param onFailure callback when failed to detect liveness
+     * */
+    fun detectLivenessScore(
         inputData: Array<Array<Array<Array<FloatArray>>>>,
         onSuccess: (Float) -> Unit,
         onFailure: (LiveFaceXException) -> Unit,
@@ -144,10 +176,6 @@ class TensorflowLiveFaceX {
 
                     outputBuffer.rewind()
                     val output = outputBuffer.float
-                    Log.d(
-                        this::class.java.simpleName,
-                        "LiveFaceX-LOG %%% successfully detect liveness: $output"
-                    )
                     withContext(Dispatchers.Main) {
                         onSuccess(output)
                     }
@@ -161,6 +189,9 @@ class TensorflowLiveFaceX {
         }
     }
 
+    /**
+     * Close TensorflowLiveFaceX
+     * */
     fun close() {
         try {
             interpreter.close()

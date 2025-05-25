@@ -66,7 +66,8 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
                 ivCamera.visibility = View.GONE
                 ivStopCamera.visibility = View.VISIBLE
                 liveFaceXDetection.processLivenessImage(
-                    imageProxy = imageProxy, listOf(
+                    imageProxy = imageProxy,
+                    gestures = listOf(
                         LiveFaceXEyeBlinked(
                             type = LEFT_EYE_BLINK,
                             blinkedThreshold = 0.8,
@@ -82,7 +83,8 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
                             blinkedThreshold = 0.8,
                             blinkedThresholdCount = 2,
                         ),
-                    ), this
+                    ),
+                    this,
                 )
             }
         }
@@ -133,7 +135,7 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
 
     override fun onAskedLivenessVerificationSucceed(
         gesture: LiveFaceXGesture,
-        imageProxy: ImageProxy
+        imageProxy: ImageProxy,
     ) {
         tvGuide.text = "BERHASIL"
     }
@@ -162,6 +164,7 @@ class SingleProcessLivenessFaceDetectionActivity : BaseCameraActivity(),
     override fun onFailureFaceDetection(
         imageProxy: ImageProxy,
         exception: LiveFaceXException,
-    ) {}
+    ) {
+    }
 
 }
